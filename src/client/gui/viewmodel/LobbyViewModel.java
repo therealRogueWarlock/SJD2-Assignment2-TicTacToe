@@ -1,4 +1,4 @@
-package client.GUI.viewmodel;
+package client.gui.viewmodel;
 
 public class LobbyViewModel
 {

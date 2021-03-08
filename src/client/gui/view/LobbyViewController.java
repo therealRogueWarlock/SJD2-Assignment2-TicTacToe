@@ -1,4 +1,4 @@
-package client.GUI.view;
+package client.gui.view;
 
 public class LobbyViewController
 {

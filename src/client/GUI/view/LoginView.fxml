@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="client.GUI.view.LoginViewController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.GUI.view.LoginViewController">
+   <children>
+      <Button layoutX="235.0" layoutY="88.0" mnemonicParsing="false" onAction="#confirmGamerTag" text="Confirm" />
+      <TextField fx:id="gamerTagLabel" layoutX="86.0" layoutY="88.0" promptText="Insert gamertag" />
+   </children>
 </AnchorPane>

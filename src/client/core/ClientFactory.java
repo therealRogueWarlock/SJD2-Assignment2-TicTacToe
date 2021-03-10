@@ -1,5 +1,4 @@
 package client.core;
 
-public class ClientFactory
-{
+public class ClientFactory {
 }

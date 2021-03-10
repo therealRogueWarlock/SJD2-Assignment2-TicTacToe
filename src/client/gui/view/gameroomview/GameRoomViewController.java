@@ -1,4 +1,4 @@
-package client.gui.view;
+package client.gui.view.gameroomview;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.ListView;

@@ -1,5 +1,4 @@
 package client.model.loginmodel;
 
-public class Login
-{
+public class ClientLoginModel {
 }

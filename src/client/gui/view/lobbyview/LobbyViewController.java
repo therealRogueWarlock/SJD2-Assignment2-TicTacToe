@@ -1,4 +1,4 @@
-package client.gui.view;
+package client.gui.view.lobbyview;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

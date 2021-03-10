@@ -1,5 +1,8 @@
 package server.model.gamemodel;
 
-public class TicTacToe
-{
+import server.model.lobbymodel.Player;
+
+public class TicTacToe {
+
+
 }

@@ -1,5 +1,4 @@
 package client.model.gameroommodel;
 
-public class GameRoom
-{
+public class ClientGameRoomModel {
 }

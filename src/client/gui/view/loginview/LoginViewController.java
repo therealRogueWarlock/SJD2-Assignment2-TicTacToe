@@ -1,15 +1,20 @@
 package client.gui.view.loginview;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import client.gui.view.ViewController;
+import client.gui.viewmodel.LoginViewModel;
+import client.core.ViewHandler;
+import client.gui.viewmodel.ViewModel;
 
-public class LoginViewController
-{
-    @FXML public TextField gamerTagLabel;
+public class LoginViewController implements ViewController {
 
-    public void confirmGamerTag(ActionEvent actionEvent)
-    {
-        //Set gamerTagLabel, og gå til LobbyView
-    }
+	private LoginViewModel loginViewModel;
+
+	public void loginButton() {
+
+	}
+
+	public void init(ViewHandler viewHandler, ViewModel model) {
+
+	}
+
 }

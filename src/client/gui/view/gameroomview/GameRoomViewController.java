@@ -1,15 +1,24 @@
 package client.gui.view.gameroomview;
 
-import javafx.event.ActionEvent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import client.gui.view.ViewController;
+import client.gui.viewmodel.GameRoomViewModel;
+import client.core.ViewHandler;
+import client.gui.viewmodel.ViewModel;
 
-public class GameRoomViewController
-{
-    public ListView chatGameRoom;
-    public TextField textToSendGameRoom;
+public class GameRoomViewController implements ViewController {
 
-    public void sendTextGameButton(ActionEvent actionEvent)
-    {
-    }
+	private GameRoomViewModel gameRoomViewModel;
+
+	public void placePieceButton() {
+
+	}
+
+	public void sendMessageButton() {
+
+	}
+
+	public void init(ViewHandler viewHandler, ViewModel model) {
+
+	}
+
 }

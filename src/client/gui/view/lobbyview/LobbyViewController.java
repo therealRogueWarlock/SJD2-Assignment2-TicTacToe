@@ -1,33 +1,29 @@
 package client.gui.view.lobbyview;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import client.gui.view.ViewController;
+import client.gui.viewmodel.LobbyViewModel;
+import client.core.ViewHandler;
+import client.gui.viewmodel.ViewModel;
 
-public class LobbyViewController
-{
+public class LobbyViewController implements ViewController {
 
-    @FXML public TableColumn listRoomNumber;
-    @FXML public TableColumn listPlayerAmount;
-    @FXML public TableColumn listPlayerNames;
-    @FXML public ListView lobbyChat;
-    @FXML public TextField textToSendLobby;
+	private LobbyViewModel lobbyViewModel;
 
-    public void joinGame(ActionEvent actionEvent)
-    {
-    }
+	public void joinButton() {
 
-    public void hostGame(ActionEvent actionEvent)
-    {
-    }
+	}
 
-    public void quitGame(ActionEvent actionEvent)
-    {
-    }
+	public void hostButton() {
 
-    public void sendTextLobby(ActionEvent actionEvent)
-    {
-    }
+	}
+
+	public void sendMessageButton() {
+
+	}
+
+
+	public void init(ViewHandler viewHandler, ViewModel model) {
+
+	}
+
 }

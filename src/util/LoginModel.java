@@ -1,4 +1,7 @@
 package util;
 
-public interface LoginModel {
+public interface LoginModel extends Subject {
+
+	public abstract void login();
+
 }

@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane prefHeight="328.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.view.gameroomview.GameRoomViewController">
    <children>
-      <GridPane layoutY="6.0" prefHeight="300.0" prefWidth="300.0">
+      <GridPane alignment="CENTER" layoutY="6.0" prefHeight="300.0" prefWidth="300.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -25,42 +24,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane fx:id="grid0_0" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid1_0" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.columnIndex="1">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid2_0" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.columnIndex="2">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid0_1" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.rowIndex="1">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid1_1" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid2_1" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.columnIndex="2" GridPane.rowIndex="1">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid0_2" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.rowIndex="2">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid1_2" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
-            <Pane fx:id="grid2_2" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" GridPane.columnIndex="2" GridPane.rowIndex="2">
-               <children>
-                  <Button layoutX="6.0" layoutY="9.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="85.0" text="XO" />
-               </children></Pane>
+            <Button fx:id="somebutton00" mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="2" />
+            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets left="10.0" />

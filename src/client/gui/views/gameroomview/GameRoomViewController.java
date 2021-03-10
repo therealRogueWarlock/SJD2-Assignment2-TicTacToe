@@ -1,6 +1,6 @@
-package client.gui.view.gameroomview;
+package client.gui.views.gameroomview;
 
-import client.gui.view.ViewController;
+import client.gui.views.ViewController;
 import client.gui.viewmodel.GameRoomViewModel;
 import client.core.ViewHandler;
 import client.gui.viewmodel.ViewModel;

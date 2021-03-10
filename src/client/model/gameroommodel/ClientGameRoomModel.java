@@ -8,16 +8,21 @@ public class ClientGameRoomModel implements GameRoomModel {
 
 	private Client client;
 
+
+	public ClientGameRoomModel(Client client) {
+		this.client = client;
+	}
+
 	public void placePiece() {
 
 	}
 
-	public void sendMessage(String msg) {
+	@Override
+	public void sendMessage(Message message) {
 
 	}
 
-
-	public void sendMessage(Message message) {
+	public void sendMessage(String msg) {
 
 	}
 

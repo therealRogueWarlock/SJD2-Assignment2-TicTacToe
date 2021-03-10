@@ -8,6 +8,11 @@ public class ClientLobbyModel implements LobbyModel {
 
 	private Client client;
 
+
+	public ClientLobbyModel(Client client) {
+		this.client = client;
+	}
+
 	public void join() {
 
 	}

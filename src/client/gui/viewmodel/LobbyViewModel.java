@@ -1,18 +1,23 @@
 package client.gui.viewmodel;
 
-import server.model.lobbymodel.ServerLobbyModel;
-import Util.LobbyModel;
-import Client.client.model.client.model.lobbymodel.ClientLobbyModel;
+import client.model.lobbymodel.ClientLobbyModel;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import util.LobbyModel;
+
+import java.beans.PropertyChangeEvent;
+
 
 public class LobbyViewModel implements ViewModel {
 
-	private SimpleStringProperty txtMessage;
-
-	private ServerLobbyModel serverLobbyModel;
-
-	private LobbyModel lobbyModel;
+	private StringProperty txtMessage;
 
 	private ClientLobbyModel clientLobbyModel;
+
+	public LobbyViewModel(LobbyModel lobbyModel) {
+		this.clientLobbyModel = (ClientLobbyModel) lobbyModel;
+		txtMessage = new SimpleStringProperty();
+	}
 
 	public void join() {
 
@@ -26,4 +31,8 @@ public class LobbyViewModel implements ViewModel {
 
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+	}
 }

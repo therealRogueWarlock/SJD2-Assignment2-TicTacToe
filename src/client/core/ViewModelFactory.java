@@ -8,16 +8,40 @@ public class ViewModelFactory {
 
 	private ModelFactory modelFactory;
 
+	private LoginViewModel loginViewModel;
+	private LobbyViewModel lobbyViewModel;
+	private GameRoomViewModel gameRoomViewModel;
+
+
+
+	public ViewModelFactory(ModelFactory modelFactory) {
+		this.modelFactory = modelFactory;
+	}
+
 	public LoginViewModel getLoginViewModel() {
-		return null;
+		if (loginViewModel == null){
+			loginViewModel = new LoginViewModel(modelFactory.getClientLoginModel());
+		}
+		return loginViewModel;
 	}
 
 	public LobbyViewModel getLobbyViewModel() {
-		return null;
+
+		if(lobbyViewModel == null){
+			lobbyViewModel = new LobbyViewModel(modelFactory.getClientLobbyModel());
+		}
+
+		return lobbyViewModel;
+
 	}
 
 	public GameRoomViewModel getGameRoomViewModel() {
-		return null;
+
+		if(gameRoomViewModel == null){
+			gameRoomViewModel = new GameRoomViewModel(modelFactory.getClientGameRoomModel());
+		}
+
+		return gameRoomViewModel;
 	}
 
 }

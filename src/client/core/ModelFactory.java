@@ -1,29 +1,47 @@
 package client.core;
 
-import Client.client.model.client.model.loginmodel.ClientLoginModel;
-import Client.client.model.client.model.lobbymodel.ClientLobbyModel;
-import Client.client.model.client.model.gameroommodel.ClientGameRoomModel;
+
+import client.model.gameroommodel.ClientGameRoomModel;
+import client.model.lobbymodel.ClientLobbyModel;
+import client.model.loginmodel.ClientLoginModel;
 
 public class ModelFactory {
 
+
 	private ClientLoginModel clientLoginModel;
-
 	private ClientLobbyModel clientLobbyModel;
-
 	private ClientGameRoomModel clientGameRoomModel;
-
 	private ClientFactory clientFactory;
 
+
+	public ModelFactory(ClientFactory clientFactory) {
+		this.clientFactory = clientFactory;
+	}
+
 	public ClientLoginModel getClientLoginModel() {
-		return null;
+
+		if (clientLoginModel == null){
+			clientLoginModel = new ClientLoginModel(clientFactory.getClient());
+		}
+
+		return clientLoginModel;
 	}
 
 	public ClientLobbyModel getClientLobbyModel() {
-		return null;
+
+		if (clientLobbyModel == null){
+			clientLobbyModel = new ClientLobbyModel(clientFactory.getClient());
+		}
+
+		return clientLobbyModel;
 	}
 
 	public ClientGameRoomModel getClientGameRoomModel() {
-		return null;
+
+		if (clientGameRoomModel == null){
+			clientGameRoomModel = new ClientGameRoomModel(clientFactory.getClient());
+		}
+		return clientGameRoomModel;
 	}
 
 }

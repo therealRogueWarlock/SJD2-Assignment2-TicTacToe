@@ -1,4 +1,4 @@
-package client.gui.view;
+package client.gui.views;
 
 import client.core.ViewHandler;
 import client.gui.viewmodel.ViewModel;

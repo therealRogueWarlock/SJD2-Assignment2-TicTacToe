@@ -7,11 +7,14 @@ public class ClientLoginModel implements LoginModel {
 
 	private Client client;
 
-	public void login(String playerName) {
 
+	public ClientLoginModel(Client client) {
+		this.client = client;
 	}
 
-	public void login() {
+	@Override
+	public void login(String playerName) {
+
 
 	}
 

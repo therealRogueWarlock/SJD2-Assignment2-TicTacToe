@@ -1,12 +1,18 @@
 package client.core;
 
-import Client.networking.Client;
+import client.networking.Client;
+import client.networking.SocketClient;
 
 public class ClientFactory {
 
 	private Client client;
 
-	public void getClient() {
+	public Client getClient() {
+		if (client == null){
+			client = new SocketClient();
+		}
+
+		return client;
 
 	}
 

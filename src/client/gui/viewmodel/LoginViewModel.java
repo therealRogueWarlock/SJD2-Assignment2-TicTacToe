@@ -1,24 +1,36 @@
 package client.gui.viewmodel;
 
-import server.model.Login;
-import server.model.loginmodel.ServerLoginModel;
-import server.model.loginmodel.LogInterface;
-import Client.client.model.client.model.loginmodel.ClientLoginModel;
+import client.model.loginmodel.ClientLoginModel;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import util.LoginModel;
+
+import java.beans.PropertyChangeEvent;
 
 public class LoginViewModel implements ViewModel {
 
-	private SimpleStringProperty name;
-
-	private Login login;
-
-	private ServerLoginModel serverLoginModel;
-
-	private LogInterface logInterface;
+	private StringProperty name;
 
 	private ClientLoginModel clientLoginModel;
 
-	public void login() {
+	public LoginViewModel(LoginModel loginModel) {
+		clientLoginModel = (ClientLoginModel) loginModel;
+
+		name = new SimpleStringProperty();
 
 	}
 
+	public void login() {
+		clientLoginModel.login(name.getValue());
+	}
+
+
+	public StringProperty nameProperty() {
+		return name;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+	}
 }

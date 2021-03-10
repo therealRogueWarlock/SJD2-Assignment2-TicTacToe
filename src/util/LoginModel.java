@@ -2,5 +2,6 @@ package util;
 
 public interface LoginModel extends Subject
 {
-    void login();
+
+    void login(String playerName);
 }

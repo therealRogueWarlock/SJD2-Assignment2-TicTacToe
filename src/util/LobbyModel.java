@@ -1,4 +1,6 @@
 package util;
 
-public interface LobbyModel {
+public interface LobbyModel extends Subject
+{
+    void join();
 }

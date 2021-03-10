@@ -1,6 +1,18 @@
 package client.core;
 
+import client.gui.viewmodel.ViewModel;
+
 public class ViewHandler
 {
-    //todo
+
+    public void start()
+    {
+
+    }
+
+
+    public void openView()
+    {
+
+    }
 }

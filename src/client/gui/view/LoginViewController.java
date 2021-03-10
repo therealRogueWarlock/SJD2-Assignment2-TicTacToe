@@ -10,5 +10,6 @@ public class LoginViewController
 
     public void confirmGamerTag(ActionEvent actionEvent)
     {
+        //Set gamerTagLabel, og gå til LobbyView
     }
 }

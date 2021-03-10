@@ -2,10 +2,9 @@ package util;
 
 import transferobjects.Message;
 
-public interface GameRoomModel extends Subject {
+public interface GameRoomModel extends Subject
+{
+    void placePiece();
 
-	public abstract void placePiece();
-
-	public abstract void sendMessage(Message message);
-
+    void sendMessage(Message message);
 }

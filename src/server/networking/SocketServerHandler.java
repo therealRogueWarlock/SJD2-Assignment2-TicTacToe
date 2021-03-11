@@ -1,7 +1,6 @@
 package server.networking;
 
 import server.model.gameroommodel.ServerGameRoomModel;
-import server.model.lobbymodel.ServerLobbyModel;
 import transferobjects.Message;
 import transferobjects.Request;
 
@@ -68,11 +67,11 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	private void handleRequest(Request request) {
 
-		if (request.getType().equals("Login")){
+		if (request.getType().equals("Login")) {
 			socketServer.loginPlayer((String) request.getArg());
 		}
 
-		if (request.getType().equals("Host")){
+		if (request.getType().equals("Host")) {
 			socketServer.createGameRoom((String) request.getArg());
 		}
 
@@ -94,9 +93,10 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-
 		try {
-			sendTransferObject(new Request(evt.getPropertyName(), evt.getNewValue()));
+			if (evt.getNewValue() instanceof ServerGameRoomModel) {
+				sendTransferObject(new Request(evt.getPropertyName(), ((ServerGameRoomModel) evt.getNewValue()).getRoomId()));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

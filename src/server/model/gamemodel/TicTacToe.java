@@ -20,7 +20,6 @@ public class TicTacToe {
 		int y = ticTacToePiece.getY();
 		String piece = ticTacToePiece.getPiece();
 
-
 		if (b[x][y].equals(" ")) {
 			b[x][y] = piece;
 

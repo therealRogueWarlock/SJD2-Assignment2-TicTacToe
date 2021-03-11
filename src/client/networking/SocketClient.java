@@ -40,12 +40,12 @@ public class SocketClient implements Client {
 	}
 
 	public void joinGame(int roomId) {
-		System.out.println("SocketClient ask socketClient handler to send join request");
+//		System.out.println("SocketClient ask socketClient handler to send join request");
 		socketClientHandler.sendJoinRequest(roomId);
 	}
 
 	public void hostGame() {
-		System.out.println("Socket client ask socketClient handler to send hos request.");
+//		System.out.println("Socket client ask socketClient handler to send hos request.");
 		socketClientHandler.sendHostRequest();
 	}
 
@@ -62,7 +62,7 @@ public class SocketClient implements Client {
 
 	@Override
 	public void sendRequest(Request request) {
-		System.out.println("Client ask clientHanlder to send object to server");
+//		System.out.println("Client ask clientHanlder to send object to server");
 		socketClientHandler.sendTransferObject(request);
 	}
 
@@ -85,7 +85,7 @@ public class SocketClient implements Client {
 
 
 	public void handleReceivedRequest(Request requestFromServer) {
-		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change" );
+//		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change" );
 		support.firePropertyChange(requestFromServer.getType(),null, requestFromServer.getArg());
 	}
 

@@ -63,10 +63,8 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 
 	public void addPlayerInfo(String playerName) {
 		if (players[0] == null) {
-
 			players[0] = playerName;
-
-		} else {
+		} else if (players[1] == null) {
 			players[1] = playerName;
 		}
 	}

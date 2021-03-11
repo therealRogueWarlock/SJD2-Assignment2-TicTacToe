@@ -9,14 +9,16 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import transferobjects.Message;
-import transferobjects.Request;
 import transferobjects.TicTacToePiece;
 import util.GameRoomModel;
+import util.Subject;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-public class GameRoomViewModel implements ViewModel {
+public class GameRoomViewModel implements ViewModel, Subject {
 
 	private StringProperty txtMessage;
 
@@ -30,7 +32,7 @@ public class GameRoomViewModel implements ViewModel {
 
 	private ObservableList<String> gameRoomChatMessages;
 
-
+	private PropertyChangeSupport support;
 
 	public GameRoomViewModel(GameRoomModel gameRoomModel) {
 		this.clientGameRoomModel = (ClientGameRoomModel) gameRoomModel;
@@ -39,7 +41,7 @@ public class GameRoomViewModel implements ViewModel {
 		this.clientGameRoomModel.addListener("win", this);
 		this.clientGameRoomModel.addListener("draw", this);
 		this.clientGameRoomModel.addListener("turnSwitch", this);
-		this.clientGameRoomModel.addListener("messageAddedGameRoom",this);
+		this.clientGameRoomModel.addListener("messageAddedGameRoom", this);
 
 		txtMessage = new SimpleStringProperty();
 
@@ -55,22 +57,23 @@ public class GameRoomViewModel implements ViewModel {
 
 		gameRoomChatMessages = FXCollections.observableArrayList();
 
+		support = new PropertyChangeSupport(this);
+
 	}
 
 	public void placePiece(int x, int y) {
 		System.out.println("ViewModel: send placePiece to GameRoomModel client");
-		clientGameRoomModel.placePiece(new TicTacToePiece(x,y));
+		clientGameRoomModel.placePiece(new TicTacToePiece(x, y));
 	}
 
-	public void updateGameBoard(int x, int y, String symbol){
+	public void updateGameBoard(int x, int y, String symbol) {
 		System.out.println("Updating game board");
 
-		Platform.runLater(()-> slots.get(convert2dTo1d(x,y)).setValue(String.valueOf(symbol)));
+		Platform.runLater(() -> slots.get(convert2dTo1d(x, y)).setValue(String.valueOf(symbol)));
 	}
 
-
-	private int convert2dTo1d(int x, int y){
-		return (y*3)+x;
+	private int convert2dTo1d(int x, int y) {
+		return (y * 3) + x;
 	}
 
 	public ArrayList<StringProperty> getSlots() {
@@ -78,34 +81,39 @@ public class GameRoomViewModel implements ViewModel {
 	}
 
 	public void sendMessage(Message message) {
-		clientGameRoomModel.sendMessage(message);
+
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String eventType = evt.getPropertyName();
-		if (eventType.equals("piecePlaced")){
+		if (eventType.equals("piecePlaced")) {
 			System.out.println("GameViewModel detected piece placed event ");
 			TicTacToePiece newPiece = (TicTacToePiece) evt.getNewValue();
-			updateGameBoard(newPiece.getX(),newPiece.getY(), newPiece.getPiece());
-		} if (eventType.equals("win")){
-			Platform.runLater(() ->winLabel.setValue((String) evt.getNewValue()));
+			updateGameBoard(newPiece.getX(), newPiece.getY(), newPiece.getPiece());
+		}
+		if (eventType.equals("win")) {
+			Platform.runLater(() -> winLabel.setValue((String) evt.getNewValue()));
 			turnSwitcher.setValue(false);
-		} if (eventType.equals("draw")){
-			Platform.runLater(()-> winLabel.setValue(eventType));
+		}
+		if (eventType.equals("draw")) {
+			Platform.runLater(() -> winLabel.setValue(eventType));
 			turnSwitcher.setValue(false);
-		} if (eventType.equals("turnSwitch")){
+		}
+		if (eventType.equals("turnSwitch")) {
 			turnSwitcher.setValue(!turnSwitcher.getValue());
-		}if (evt.getPropertyName().equals("messageAddedGameRoom")){
+		}
+		if (evt.getPropertyName().equals("messageAddedGameRoom")) {
 			System.out.println("gameRoom detected incoming message");
 			Message message = (Message) evt.getNewValue();
 			String senderName = message.getName();
 			String txtMessage = message.getStringMessage();
-			Platform.runLater(() ->gameRoomChatMessages.add(senderName+ ": " + txtMessage));
+			Platform.runLater(() -> gameRoomChatMessages.add(senderName + ": " + txtMessage));
 		}
+	}
 
-
-
+	private void returnToLobby() {
+		support.firePropertyChange("ViewChange", "GameRoom", "Lobby");
 	}
 
 	public ObservableList<String> getGameRoomChatMessages() {
@@ -124,4 +132,13 @@ public class GameRoomViewModel implements ViewModel {
 		return turnSwitcher;
 	}
 
+	@Override
+	public void addListener(String propertyName, PropertyChangeListener listener) {
+		support.addPropertyChangeListener(propertyName, listener);
+	}
+
+	@Override
+	public void removeListener(String propertyName, PropertyChangeListener listener) {
+		support.removePropertyChangeListener(propertyName, listener);
+	}
 }

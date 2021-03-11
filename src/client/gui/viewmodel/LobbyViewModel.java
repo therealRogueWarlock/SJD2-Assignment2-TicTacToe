@@ -53,8 +53,13 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 	public void join() {
 		System.out.println("Lobby view Call join on client");
 
-		int gameRoomId = selectedGameRoom.getValue().getId();
-		clientLobbyModel.join(null, gameRoomId);
+		int gameRoomId = 0;
+		try {
+			gameRoomId = selectedGameRoom.getValue().getId();
+			clientLobbyModel.join(null, gameRoomId);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 

@@ -59,7 +59,7 @@ public class SocketServer {
     }
 
     public void joinGameRoom(SocketServerHandler socketServerHandler, int roomId) {
-        System.out.println("SocketServer call join on server lobby model");
+//        System.out.println("SocketServer call join on server lobby model");
         serverLobbyModel.join(socketServerHandler, roomId);
 
     }

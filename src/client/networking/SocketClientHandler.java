@@ -22,7 +22,7 @@ public class SocketClientHandler implements Runnable {
 	}
 
 	public void sendTransferObject(Object object) {
-		System.out.println("Send object to server");
+//		System.out.println("Send object to server");
 		try {
 			outToServer.writeUnshared(object);
 		} catch (IOException e) {
@@ -40,7 +40,7 @@ public class SocketClientHandler implements Runnable {
 	public void handleTransferObject(Object itemFromServer) {
 
 		if (itemFromServer instanceof Request) {
-			System.out.println("ask socket Client to handle request");
+//			System.out.println("ask socket Client to handle request");
 			socketClient.handleReceivedRequest((Request) itemFromServer); // FIXME: Unsure
 		} else if (itemFromServer instanceof Message) {
 			socketClient.handleReceivedMessage((Message) itemFromServer); // FIXME: Unsure
@@ -55,14 +55,14 @@ public class SocketClientHandler implements Runnable {
 		String loginName = socketClient.getClientName();
 		sendTransferObject(new Request("Login", loginName));
 
-		System.out.println(loginName + " Logged in, listening to server");
+//		System.out.println(loginName + " Logged in, listening to server");
 		while (true) { // FIXME: Reevaluate use of infinite loop
 
 			try {
 
 				itemFromServer = inFromServer.readUnshared();
-				System.out.println("Got object from server");
-				System.out.println("Handel object");
+//				System.out.println("Got object from server");
+//				System.out.println("Handel object");
 				handleTransferObject(itemFromServer);
 
 			} catch (IOException | ClassNotFoundException e) {
@@ -79,7 +79,7 @@ public class SocketClientHandler implements Runnable {
 
 
 	public void sendJoinRequest(int roomId) {
-		System.out.println("Send join request to room"+ roomId);
+//		System.out.println("Send join request to room"+ roomId);
 		sendTransferObject(new Request("Join", roomId));
 	}
 }

@@ -6,7 +6,6 @@ import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,21 +16,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import transferobjects.Message;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
-public class GameRoomViewController implements ViewController {
+public class GameRoomViewController implements ViewController, PropertyChangeListener {
 
-	public GridPane gameBoard;
-	public Label gameInfo;
+	@FXML private GridPane gameBoard;
+	@FXML private Label gameInfo;
 	@FXML private ListView chatGameRoom;
 	@FXML private TextField textToSendGameRoom;
 	private ViewHandler viewHandler;
 	private GameRoomViewModel gameRoomViewModel;
 
 	private BooleanProperty myTurn;
-
-
-
 
 	public void init(ViewHandler viewHandler, ViewModel model) {
 		this.viewHandler = viewHandler;
@@ -42,8 +40,8 @@ public class GameRoomViewController implements ViewController {
 		myTurn.bind(gameRoomViewModel.turnSwitcherProperty());
 
 		int index = 0;
-		for (Node button:gameBoard.getChildren()){
-			if (button instanceof Button){
+		for (Node button : gameBoard.getChildren()) {
+			if (button instanceof Button) {
 				((Button) button).textProperty().bind(gameRoomViewModel.getSlots().get(index));
 				button.disableProperty().bind(gameRoomViewModel.turnSwitcherProperty());
 			}
@@ -54,10 +52,10 @@ public class GameRoomViewController implements ViewController {
 
 		gameRoomViewModel.txtMessageProperty().bind(textToSendGameRoom.textProperty());
 
+		this.gameRoomViewModel.addListener("ViewChange", this);
+
 		chatGameRoom.setItems(gameRoomViewModel.getGameRoomChatMessages());
-
 	}
-
 
 	@Override
 	public void swapScene(String scene) throws IOException {
@@ -75,7 +73,7 @@ public class GameRoomViewController implements ViewController {
 				int col = GridPane.getColumnIndex(button);
 				int row = GridPane.getRowIndex(button);
 
-				gameRoomViewModel.placePiece(col,row);
+				gameRoomViewModel.placePiece(col, row);
 
 			} else {
 				System.out.println("Didn't click on the button");
@@ -91,9 +89,20 @@ public class GameRoomViewController implements ViewController {
 			newMessage.setTarget("GameRoom");
 			gameRoomViewModel.sendMessage(newMessage);
 			textToSendGameRoom.clear();
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("ViewChange")) {
+			try {
+				Thread.sleep(5000);
+				viewHandler.openView((String) evt.getNewValue());
+			} catch (InterruptedException | IOException e) {
+				e.printStackTrace();
+			}
 
 		}
-
 
 	}
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
@@ -39,6 +40,9 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 				Object obj = receiveTransferObject();
 				handleReceivedObject(obj);
 
+			} catch (SocketException e) {
+				System.out.println("User Disconnected");
+				break;
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 				break;
@@ -69,23 +73,20 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	private void handleRequest(Request request) {
 
-		if (request.getType().equals("Login")) {
-			socketServer.loginPlayer((String) request.getArg());
-		}
-
-		if (request.getType().equals("Host")) {
-			System.out.println("SOcketServerHanlder received hos request");
-			socketServer.createGameRoom(this, (String) request.getArg());
-		}
-
-		if (request.getType().equals("Join")) {
-			System.out.println("SocketServerHandler received join request");
-			socketServer.joinGameRoom(this, (Integer) request.getArg());
-		}
-
-		if (request.getType().equals("place")) {
-			System.out.println("Server received a place piece request");
-			serverGameRoomModel.placePiece((TicTacToePiece) request.getArg());
+		switch (request.getType()) {
+			case "Login" -> socketServer.loginPlayer((String) request.getArg());
+			case "Host" -> {
+//				System.out.println("SocketServerHandler received hos request");
+				socketServer.createGameRoom(this, (String) request.getArg());
+			}
+			case "Join" -> {
+//				System.out.println("SocketServerHandler received join request");
+				socketServer.joinGameRoom(this, (Integer) request.getArg());
+			}
+			case "place" -> {
+//				System.out.println("Server received a place piece request");
+				serverGameRoomModel.placePiece((TicTacToePiece) request.getArg());
+			}
 		}
 
 	}
@@ -114,7 +115,8 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 			switch (eventType) {
 				case "gameRoomAdd" -> sendTransferObject(new Request(evt.getPropertyName(), ((ServerGameRoomModel) evt.getNewValue()).getRoomId()));
-				case "piecePlaced", "win" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
+				case "piecePlaced" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
+				case "win" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
 				case "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, null));
 				case "messageAdded" -> sendTransferObject(evt.getNewValue());
 			}

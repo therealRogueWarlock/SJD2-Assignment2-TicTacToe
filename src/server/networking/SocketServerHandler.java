@@ -40,6 +40,7 @@ public class SocketServerHandler implements Runnable {
 
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
+				break;
 			}
 
 		}

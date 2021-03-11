@@ -28,22 +28,18 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 	@Override
 	public void placePiece(TicTacToePiece ticTacToePiece) {
 
-		if ( ticTacToe.placePiece(ticTacToePiece)){
+		if (ticTacToe.placePiece(ticTacToePiece)) {
 			iChanged("piecePlaced", ticTacToePiece);
 		}
 
-		if (ticTacToe.checkForWin(ticTacToePiece.getPiece())){
+		if (ticTacToe.checkForWin(ticTacToePiece.getPiece())) {
 			iChanged("win", ticTacToePiece.getPiece());
 
-		}else if (ticTacToe.checkDraw()){
-			iChanged("draw",null);
+		} else if (ticTacToe.checkDraw()) {
+			iChanged("draw", null);
 		}
-		iChanged("turnSwitch",null);
+		iChanged("turnSwitch", null);
 	}
-
-
-
-
 
 	@Override
 	public int getRoomId() {
@@ -64,12 +60,12 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 		chatRoom.addMessage(message);
 	}
 
-	public void addPlayerInfo(String playerName){
-		if (players[0] == null){
+	public void addPlayerInfo(String playerName) {
+		if (players[0] == null) {
 
 			players[0] = playerName;
 
-		}else{
+		} else {
 			players[1] = playerName;
 		}
 	}
@@ -78,15 +74,14 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 		this.gameRoomId = gameRoomId;
 	}
 
-	public void addMessage(Message message){
+	public void addMessage(Message message) {
 		chatRoom.addMessage(message);
 		iChanged("messageAdded", message);
 	}
 
-	public void iChanged(String type, Object newValue){
-		support.firePropertyChange(type,null,newValue);
+	public void iChanged(String type, Object newValue) {
+		support.firePropertyChange(type, null, newValue);
 	}
-
 
 	@Override
 	public void addListener(String propertyName, PropertyChangeListener listener) {
@@ -97,7 +92,5 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
 	}
-
-
 
 }

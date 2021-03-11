@@ -1,6 +1,5 @@
-package server.networking;
-
 import server.model.ServerModelTester;
+import server.networking.SocketServer;
 
 import java.io.IOException;
 

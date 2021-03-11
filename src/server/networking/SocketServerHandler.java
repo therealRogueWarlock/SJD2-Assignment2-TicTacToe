@@ -75,15 +75,15 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 		if (request.getType().equals("Host")) {
 			System.out.println("SOcketServerHanlder received hos request");
-			socketServer.createGameRoom(this,(String) request.getArg());
+			socketServer.createGameRoom(this, (String) request.getArg());
 		}
 
-		if (request.getType().equals("Join")){
+		if (request.getType().equals("Join")) {
 			System.out.println("SocketServerHandler received join request");
 			socketServer.joinGameRoom(this, (Integer) request.getArg());
 		}
 
-		if (request.getType().equals("place")){
+		if (request.getType().equals("place")) {
 			System.out.println("Server received a place piece request");
 			serverGameRoomModel.placePiece((TicTacToePiece) request.getArg());
 		}
@@ -91,9 +91,9 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 	}
 
 	private void handleMessage(Message message) {
-		if (message.getTarget().equals("Lobby")){
+		if (message.getTarget().equals("Lobby")) {
 			socketServer.addMessage(message);
-		}else {
+		} else {
 			serverGameRoomModel.addMessage(message);
 		}
 
@@ -112,21 +112,12 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 		try {
 			String eventType = evt.getPropertyName();
 
-
-			if (eventType.equals("gameRoomAdd")) {
-				sendTransferObject(new Request(evt.getPropertyName(), ((ServerGameRoomModel) evt.getNewValue()).getRoomId()));
-			} if (eventType.equals("piecePlaced")){
-				sendTransferObject(new Request(eventType, evt.getNewValue()));
-			} if (eventType.equals("win")){
-				sendTransferObject(new Request(eventType, evt.getNewValue()));
-			} if (eventType.equals("draw")){
-				sendTransferObject(new Request(eventType, null));
-			} if (eventType.equals("turnSwitch")){
-				sendTransferObject(new Request(eventType, null));
-			} if (eventType.equals("messageAdded")){
-				sendTransferObject(evt.getNewValue());
+			switch (eventType) {
+				case "gameRoomAdd" -> sendTransferObject(new Request(evt.getPropertyName(), ((ServerGameRoomModel) evt.getNewValue()).getRoomId()));
+				case "piecePlaced", "win" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
+				case "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, null));
+				case "messageAdded" -> sendTransferObject(evt.getNewValue());
 			}
-
 
 		} catch (IOException e) {
 			e.printStackTrace();

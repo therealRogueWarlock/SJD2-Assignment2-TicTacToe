@@ -1,8 +1,8 @@
 package client.core;
 
-import client.gui.viewmodel.LoginViewModel;
-import client.gui.viewmodel.LobbyViewModel;
 import client.gui.viewmodel.GameRoomViewModel;
+import client.gui.viewmodel.LobbyViewModel;
+import client.gui.viewmodel.LoginViewModel;
 
 public class ViewModelFactory {
 
@@ -12,14 +12,12 @@ public class ViewModelFactory {
 	private LobbyViewModel lobbyViewModel;
 	private GameRoomViewModel gameRoomViewModel;
 
-
-
 	public ViewModelFactory(ModelFactory modelFactory) {
 		this.modelFactory = modelFactory;
 	}
 
 	public LoginViewModel getLoginViewModel() {
-		if (loginViewModel == null){
+		if (loginViewModel == null) {
 			loginViewModel = new LoginViewModel(modelFactory.getClientLoginModel());
 		}
 		return loginViewModel;
@@ -27,7 +25,7 @@ public class ViewModelFactory {
 
 	public LobbyViewModel getLobbyViewModel() {
 
-		if(lobbyViewModel == null){
+		if (lobbyViewModel == null) {
 			lobbyViewModel = new LobbyViewModel(modelFactory.getClientLobbyModel());
 		}
 
@@ -37,7 +35,7 @@ public class ViewModelFactory {
 
 	public GameRoomViewModel getGameRoomViewModel() {
 
-		if(gameRoomViewModel == null){
+		if (gameRoomViewModel == null) {
 			gameRoomViewModel = new GameRoomViewModel(modelFactory.getClientGameRoomModel());
 		}
 

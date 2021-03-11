@@ -15,10 +15,6 @@ public class ServerGameRoomModel implements GameRoomModel {
 		ticTacToe.placePiece(x, y, piece);
 	}
 
-	public void addMessage(Message msg) { // Er dette ikke bare sendMessage() igen??
-		chatRoom.addMessage(msg);
-	}
-
 	public void sendMessage(Message message) {
 		chatRoom.addMessage(message);
 	}

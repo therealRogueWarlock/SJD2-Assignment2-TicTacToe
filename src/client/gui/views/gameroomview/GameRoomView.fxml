@@ -23,17 +23,17 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <Button fx:id="somebutton00" mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" onMouseClicked="#placePiece" prefHeight="82.0" prefWidth="85.0" text="XO" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-         </children>
+          <children>
+              <Button alignment="CENTER" contentDisplay="CENTER"                                maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0"  layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0"  layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0"  layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#placePiece" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+          </children>
          <padding>
             <Insets left="10.0" />
          </padding>

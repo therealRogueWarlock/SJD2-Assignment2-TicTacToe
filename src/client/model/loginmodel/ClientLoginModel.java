@@ -1,12 +1,11 @@
 package client.model.loginmodel;
 
-import util.LoginModel;
 import client.networking.Client;
+import util.LoginModel;
 
 public class ClientLoginModel implements LoginModel {
 
 	private Client client;
-
 
 	public ClientLoginModel(Client client) {
 		this.client = client;
@@ -14,8 +13,7 @@ public class ClientLoginModel implements LoginModel {
 
 	@Override
 	public void login(String playerName) {
-
-
+		client.setClientName(playerName);
 	}
 
 	@Override

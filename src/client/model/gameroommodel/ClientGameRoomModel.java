@@ -1,29 +1,27 @@
 package client.model.gameroommodel;
 
-import util.GameRoomModel;
 import client.networking.Client;
 import transferobjects.Message;
+import transferobjects.Request;
+import transferobjects.TicTacToePiece;
+import util.GameRoomModel;
 
 public class ClientGameRoomModel implements GameRoomModel {
 
 	private Client client;
 
-
 	public ClientGameRoomModel(Client client) {
 		this.client = client;
 	}
 
-	public void placePiece() {
-
+	@Override
+	public void placePiece(int x, int y, char piece) {
+		client.sendRequest(new Request("place", new TicTacToePiece(x, y, piece)));
 	}
 
 	@Override
-	public void sendMessage(Message message) {
-
-	}
-
-	public void sendMessage(String msg) {
-
+	public void sendMessage(Message msg) {
+		client.sendMessage(msg);
 	}
 
 	@Override

@@ -10,81 +10,74 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SocketServerHandler implements Runnable{
+public class SocketServerHandler implements Runnable {
 
-    private Socket socket;
-    private ObjectOutputStream outToClient;
-    private ObjectInputStream inFromClient;
-    private ServerGameRoomModel serverGameRoomModel;
-    private ServerLobbyModel serverLobbyModel;
+	private Socket socket;
+	private ObjectOutputStream outToClient;
+	private ObjectInputStream inFromClient;
+	private ServerGameRoomModel serverGameRoomModel;
+	private ServerLobbyModel serverLobbyModel;
 
+	public SocketServerHandler(Socket socket, ServerLobbyModel serverLobbyModel) throws IOException {
+		this.socket = socket;
+		outToClient = new ObjectOutputStream(socket.getOutputStream());
+		inFromClient = new ObjectInputStream(socket.getInputStream());
+		this.serverLobbyModel = serverLobbyModel;
+	}
 
-    public SocketServerHandler(Socket socket, ServerLobbyModel serverLobbyModel) throws IOException {
-        this.socket = socket;
-        outToClient = new ObjectOutputStream(socket.getOutputStream());
-        inFromClient = new ObjectInputStream(socket.getInputStream());
-        this.serverLobbyModel = serverLobbyModel;
-    }
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
+		while (true) {
 
-        while(true){
+			try {
 
-            try {
+				Object obj = receiveTransferObject();
+				handleReceivedObject(obj);
 
-                Object obj = receiveTransferObject();
-                handleReceivedObject(obj);
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+		}
 
-        }
+	}
 
+	public void sendRequest(Request request) throws IOException {
+		outToClient.writeObject(request);
+	}
 
-    }
+	public Object receiveTransferObject() throws IOException, ClassNotFoundException {
+		return inFromClient.readObject();
 
+	}
 
-    public void sendRequest(Request request) throws IOException {
-        outToClient.writeObject(request);
-    }
+	private void handleReceivedObject(Object obj) {
+		if (obj instanceof Request) {
+			handleRequest((Request) obj);
 
+		} else if (obj instanceof Message) {
+			handleMessage((Message) obj);
+		}
 
-    public Object receiveTransferObject() throws IOException, ClassNotFoundException {
-        return inFromClient.readObject();
+	}
 
-    }
+	private void handleRequest(Request request) {
+		// TODO: check request types
+	}
 
-    private void handleReceivedObject(Object obj){
-        if (obj instanceof Request){
-            handleRequest((Request) obj);
+	private void handleMessage(Message message) {
 
-        }else if (obj instanceof Message){
-            handleMessage((Message) obj);
-        }
+		// TODO: check where the message should go
 
-    }
+	}
 
-    private void handleRequest(Request request) {
-        //todo: check request types
-    }
+	public void setServerGameRoomModel(ServerGameRoomModel serverGameRoomModel) {
+		this.serverGameRoomModel = serverGameRoomModel;
+	}
 
-    private void handleMessage(Message message){
-
-        //todo: check where the message should go
-
-    }
-
-
-    public void setServerGameRoomModel(ServerGameRoomModel serverGameRoomModel) {
-        this.serverGameRoomModel = serverGameRoomModel;
-    }
-
-    public ServerGameRoomModel getServerGameRoomModel() {
-        return serverGameRoomModel;
-    }
-
-
+	public ServerGameRoomModel getServerGameRoomModel() {
+		return serverGameRoomModel;
+	}
 
 }

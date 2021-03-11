@@ -1,13 +1,12 @@
 package client.model.lobbymodel;
 
-import util.LobbyModel;
 import client.networking.Client;
 import transferobjects.Message;
+import util.LobbyModel;
 
 public class ClientLobbyModel implements LobbyModel {
 
 	private Client client;
-
 
 	public ClientLobbyModel(Client client) {
 		this.client = client;
@@ -21,12 +20,13 @@ public class ClientLobbyModel implements LobbyModel {
 
 	}
 
-	public void sendMessage(int msg) {
-
+	public void sendMessage(String msg) {
+		client.sendMessage(new Message(msg));
 	}
 
+	@Override
 	public void sendMessage(Message message) {
-
+		client.sendMessage(message);
 	}
 
 	@Override

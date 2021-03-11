@@ -1,7 +1,7 @@
 package client.core;
 
-import client.gui.views.ViewController;
 import client.gui.viewmodel.ViewModel;
+import client.gui.views.ViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,7 +29,7 @@ public class ViewHandler {
 
 		FXMLLoader loader = new FXMLLoader();
 
-		loader.setLocation(getClass().getResource("../gui/views/" + viewToOpen.toLowerCase() +"view/"+ viewToOpen + "View.fxml"));
+		loader.setLocation(getClass().getResource("../gui/views/" + viewToOpen.toLowerCase() + "view/" + viewToOpen + "View.fxml"));
 		root = loader.load();
 		ViewController viewController = loader.getController();
 		viewController.init(this, getViewModelByViewName(viewToOpen));
@@ -39,19 +39,25 @@ public class ViewHandler {
 		stage.show();
 	}
 
-
-	private ViewModel getViewModelByViewName(String viewName){
-
-		if (viewName.equals("Login")){
-			return viewModelFactory.getLoginViewModel();
-		}
-
-		return null;
+	private ViewModel getViewModelByViewName(String viewName) {
+		// Lambda Expression for et Switch på ViewName
+		return switch (viewName) {
+			case "Login" -> viewModelFactory.getLoginViewModel();
+			case "Lobby" -> viewModelFactory.getLobbyViewModel();
+			case "GameRoom" -> viewModelFactory.getGameRoomViewModel();
+			default -> null;
+		};
+// 		Skrevet ud til et normalt switch
+//		switch (viewName) {
+//			case "Login":
+//				return viewModelFactory.getLoginViewModel();
+//			case "Lobby":
+//				return viewModelFactory.getLobbyViewModel();
+//			case "GameRoom":
+//				return viewModelFactory.getGameRoomViewModel();
+//			default:
+//				return null;
+//		}
 	}
-
-
-
-
-
 
 }

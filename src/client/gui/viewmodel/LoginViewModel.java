@@ -24,7 +24,6 @@ public class LoginViewModel implements ViewModel {
 		clientLoginModel.login(name.getValue());
 	}
 
-
 	public StringProperty nameProperty() {
 		return name;
 	}

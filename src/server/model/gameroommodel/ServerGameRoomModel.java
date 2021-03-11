@@ -23,7 +23,6 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 	public ServerGameRoomModel() {
 		this.support = new PropertyChangeSupport(this);
 		ticTacToe = new TicTacToe();
-
 	}
 
 	@Override
@@ -41,6 +40,7 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 		}
 		iChanged("turnSwitch",null);
 	}
+
 
 
 
@@ -78,9 +78,13 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 		this.gameRoomId = gameRoomId;
 	}
 
+	public void addMessage(Message message){
+		chatRoom.addMessage(message);
+		iChanged("messageAdded", message);
+	}
+
 	public void iChanged(String type, Object newValue){
 		support.firePropertyChange(type,null,newValue);
-
 	}
 
 
@@ -93,6 +97,7 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
 	}
+
 
 
 }

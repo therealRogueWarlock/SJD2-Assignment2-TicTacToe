@@ -1,6 +1,7 @@
 package server.networking;
 
 import server.model.lobbymodel.ServerLobbyModel;
+import transferobjects.Message;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -24,6 +25,7 @@ public class SocketServer {
                 SocketServerHandler socketServerHandler = new SocketServerHandler(socket, this);
 
                 serverLobbyModel.addListener("gameRoomAdd", socketServerHandler);
+                serverLobbyModel.addListener("messageAdded", socketServerHandler);
 
                 Thread socketThread = new Thread(socketServerHandler);
                 socketThread.start();
@@ -60,6 +62,10 @@ public class SocketServer {
         System.out.println("SocketServer call join on server lobby model");
         serverLobbyModel.join(socketServerHandler, roomId);
 
+    }
+
+    public void addMessage(Message message){
+        serverLobbyModel.addMessage(message);
     }
 
 

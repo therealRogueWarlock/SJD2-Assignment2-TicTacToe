@@ -17,7 +17,7 @@ public class Message implements Serializable {
 		return name;
 	}
 
-	public void setName() {
+	public void setName(String name) {
 		this.name = name;
 	}
 

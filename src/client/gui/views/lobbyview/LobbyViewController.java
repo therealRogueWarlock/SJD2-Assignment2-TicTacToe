@@ -4,10 +4,12 @@ import client.core.ViewHandler;
 import client.gui.viewmodel.LobbyViewModel;
 import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
+import client.model.lobbymodel.tabelobjects.GameTableRow;
 import com.sun.javafx.scene.control.LabeledText;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import transferobjects.Message;
@@ -18,17 +20,13 @@ import java.io.IOException;
 public class LobbyViewController implements ViewController {
 
 
-	public Label gameRoomTest;
-
 	@FXML private TextField textToSendLobby;
 	@FXML private ListView lobbyChat;
 
 
-
-	@FXML private TableView<String> gameRooms;
-	@FXML private TableColumn<String, String> listRoomNumber;
-	@FXML private TableColumn<GameRoomModel, String> listPlayerAmount;
-	@FXML private TableColumn<GameRoomModel, String> listPlayerNames;
+	@FXML private TableView<GameTableRow> gameRooms;
+	@FXML private TableColumn<GameTableRow, Integer> listRoomId;
+	@FXML private TableColumn<GameTableRow, String> listPlayerNames;
 
 
 	private ViewHandler viewHandler;
@@ -38,13 +36,20 @@ public class LobbyViewController implements ViewController {
 		this.viewHandler = viewHandler;
 		lobbyViewModel = (LobbyViewModel) model;
 
-		gameRoomTest.textProperty().bind(lobbyViewModel.testGameRoomProperty());
+
+		gameRooms.setItems(lobbyViewModel.getObservableGameRooms());
+
+		listRoomId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		listPlayerNames.setCellValueFactory(new PropertyValueFactory<>("players"));
 
 
-		/*listRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomId"));
-		listPlayerAmount.setCellValueFactory(new PropertyValueFactory<>("playerCount"));
-		listPlayerNames.setCellValueFactory(new PropertyValueFactory<>("playerNames"));
-*/
+		lobbyViewModel.selectedGameRoomProperty().bind(gameRooms.getSelectionModel().selectedItemProperty());
+
+		lobbyViewModel.txtMessageProperty().bind(textToSendLobby.textProperty());
+
+		lobbyChat.setItems(lobbyViewModel.getLobbyChatMessages());
+
+
 
 	}
 
@@ -53,10 +58,9 @@ public class LobbyViewController implements ViewController {
 		lobbyViewModel.host();
 
 		swapScene("GameRoom");
-
 	}
 
-	public void sendMessageButton() {
+	public void sendTextLobby() {
 		if (!textToSendLobby.getText().isEmpty()) {
 			lobbyViewModel.sendMessage(new Message(textToSendLobby.getText()));
 			textToSendLobby.clear();
@@ -75,24 +79,14 @@ public class LobbyViewController implements ViewController {
 		System.exit(1);
 	}
 
-	public void sendTextLobby() {
-		lobbyViewModel.sendMessage(new Message(textToSendLobby.getText()));
-	}
 
-	public void joinTestGame(MouseEvent actionEvent) {
 
-		int roomId = Integer.parseInt(((LabeledText) actionEvent.getTarget()).getText());
-
-		System.out.println("lobby controller: join game, call viewModel");
-		lobbyViewModel.join(roomId);
-
+	public void joinGame() {
+		lobbyViewModel.join();
 		try {
 			swapScene("GameRoom");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void joinGame(ActionEvent actionEvent) {
 	}
 }

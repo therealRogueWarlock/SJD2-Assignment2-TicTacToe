@@ -21,7 +21,7 @@
         </ButtonBar>
         <TableView fx:id="gameRooms" layoutX="14.0" layoutY="14.0" prefHeight="308.0" prefWidth="265.0">
             <columns>
-                <TableColumn fx:id="listRoomNumber" prefWidth="75.0" text="Room" />
+                <TableColumn fx:id="listRoomId" prefWidth="75.0" text="Room" />
                 <TableColumn fx:id="listPlayerAmount" prefWidth="75.0" text="Players" />
                 <TableColumn fx:id="listPlayerNames" prefWidth="114.0" text="Names" />
             </columns>
@@ -34,7 +34,6 @@
         </Label>
         <Button layoutX="534.0" layoutY="354.0" mnemonicParsing="false" onAction="#sendTextLobby" text="Send" />
         <TextField fx:id="textToSendLobby" layoutX="373.0" layoutY="354.0" prefHeight="25.0" prefWidth="154.0" promptText="Text to send" />
-      <Label fx:id="gameRoomTest" layoutX="300.0" layoutY="85.0" onMouseClicked="#joinTestGame" text="Label" />
     </children>
 
 </AnchorPane>

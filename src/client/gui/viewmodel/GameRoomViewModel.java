@@ -2,6 +2,8 @@ package client.gui.viewmodel;
 
 import client.model.gameroommodel.ClientGameRoomModel;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import transferobjects.Message;
@@ -15,9 +17,14 @@ import java.util.ArrayList;
 public class GameRoomViewModel implements ViewModel {
 
 	private StringProperty txtMessage;
+
+	private StringProperty winLabel;
+
 	private ClientGameRoomModel clientGameRoomModel;
 
 	private ArrayList<StringProperty> slots;
+
+	private BooleanProperty turnSwitcher;
 
 	public GameRoomViewModel(GameRoomModel gameRoomModel) {
 		this.clientGameRoomModel = (ClientGameRoomModel) gameRoomModel;
@@ -29,13 +36,15 @@ public class GameRoomViewModel implements ViewModel {
 
 		txtMessage = new SimpleStringProperty();
 
-		slots = new ArrayList<>();
+		turnSwitcher = new SimpleBooleanProperty();
+		turnSwitcher.setValue(true);
 
+		slots = new ArrayList<>();
 		for (int i = 0; i < 9; i++) {
 			slots.add(new SimpleStringProperty());
 		}
 
-
+		winLabel = new SimpleStringProperty();
 
 	}
 
@@ -71,16 +80,27 @@ public class GameRoomViewModel implements ViewModel {
 			TicTacToePiece newPiece = (TicTacToePiece) evt.getNewValue();
 			updateGameBoard(newPiece.getX(),newPiece.getY(), newPiece.getPiece());
 		} if (eventType.equals("win")){
-			//sendTransferObject(new Request(eventType, null));
+			Platform.runLater(() ->winLabel.setValue((String) evt.getNewValue()));
+			turnSwitcher.setValue(false);
 		} if (eventType.equals("draw")){
-			//sendTransferObject(new Request(eventType, null));
-		} if (eventType.equals("trunSwitch")){
-			//sendTransferObject(new Request(eventType, null));
+			Platform.runLater(()-> winLabel.setValue(eventType));
+			turnSwitcher.setValue(false);
+		} if (eventType.equals("turnSwitch")){
+			turnSwitcher.setValue(!turnSwitcher.getValue());
 		}
 	}
 
 
 
 
+
+
+	public StringProperty winLabelProperty() {
+		return winLabel;
+	}
+
+	public BooleanProperty turnSwitcherProperty() {
+		return turnSwitcher;
+	}
 
 }

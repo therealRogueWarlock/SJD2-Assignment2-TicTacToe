@@ -48,8 +48,8 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	}
 
-	public void sendTransferObject(Request request) throws IOException {
-		outToClient.writeObject(request);
+	public void sendTransferObject(Object object) throws IOException {
+		outToClient.writeObject(object);
 	}
 
 	public Object receiveTransferObject() throws IOException, ClassNotFoundException {
@@ -91,8 +91,11 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 	}
 
 	private void handleMessage(Message message) {
-
-		// TODO: check where the message should go
+		if (message.getTarget().equals("Lobby")){
+			socketServer.addMessage(message);
+		}else {
+			serverGameRoomModel.addMessage(message);
+		}
 
 	}
 
@@ -109,6 +112,7 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 		try {
 			String eventType = evt.getPropertyName();
 
+
 			if (eventType.equals("gameRoomAdd")) {
 				sendTransferObject(new Request(evt.getPropertyName(), ((ServerGameRoomModel) evt.getNewValue()).getRoomId()));
 			} if (eventType.equals("piecePlaced")){
@@ -119,8 +123,9 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 				sendTransferObject(new Request(eventType, null));
 			} if (eventType.equals("turnSwitch")){
 				sendTransferObject(new Request(eventType, null));
+			} if (eventType.equals("messageAdded")){
+				sendTransferObject(evt.getNewValue());
 			}
-
 
 
 		} catch (IOException e) {

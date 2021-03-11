@@ -4,10 +4,13 @@ import client.core.ViewHandler;
 import client.gui.viewmodel.GameRoomViewModel;
 import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -19,33 +22,43 @@ import java.io.IOException;
 public class GameRoomViewController implements ViewController {
 
 	public GridPane gameBoard;
+	public Label gameInfo;
 	@FXML private ListView chatGameRoom;
 	@FXML private TextField textToSendGameRoom;
 	private ViewHandler viewHandler;
 	private GameRoomViewModel gameRoomViewModel;
+
+	private BooleanProperty myTurn;
+
+
+
+
+	public void init(ViewHandler viewHandler, ViewModel model) {
+		this.viewHandler = viewHandler;
+		gameRoomViewModel = (GameRoomViewModel) model;
+
+		myTurn = new SimpleBooleanProperty();
+
+		myTurn.bind(gameRoomViewModel.turnSwitcherProperty());
+
+		int index = 0;
+		for (Node button:gameBoard.getChildren()){
+			if (button instanceof Button){
+				((Button) button).textProperty().bind(gameRoomViewModel.getSlots().get(index));
+				button.disableProperty().bind(gameRoomViewModel.turnSwitcherProperty());
+			}
+			index++;
+		}
+
+		gameInfo.textProperty().bind(gameRoomViewModel.winLabelProperty());
+
+	}
 
 	public void sendMessageButton() {
 		if (!textToSendGameRoom.getText().isEmpty()) {
 			gameRoomViewModel.sendMessage(new Message(textToSendGameRoom.getText())); // FIXME: Skal gøres som property??
 			textToSendGameRoom.clear();
 		}
-	}
-
-	public void init(ViewHandler viewHandler, ViewModel model) {
-		this.viewHandler = viewHandler;
-		gameRoomViewModel = (GameRoomViewModel) model;
-
-
-
-		int index = 0;
-		for (Node button:gameBoard.getChildren()){
-
-			if (button instanceof Button){
-				((Button) button).textProperty().bind(gameRoomViewModel.getSlots().get(index));
-			}
-			index++;
-		}
-
 	}
 
 	@Override
@@ -66,7 +79,6 @@ public class GameRoomViewController implements ViewController {
 
 				gameRoomViewModel.placePiece(col,row);
 
-				// TODO: Fortæl serveren at der skal sættes en brik på x,y. Brikker er ikke bundet til en spiller endnu
 			} else {
 				System.out.println("Didn't click on the button");
 			}

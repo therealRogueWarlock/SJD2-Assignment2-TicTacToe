@@ -26,7 +26,7 @@ public class SocketClient implements Client {
 
 			Thread socketClientHandlerThread = new Thread(socketClientHandler);
 
-			socketClientHandlerThread.setDaemon(true); // FIXME: Needed?
+			socketClientHandlerThread.setDaemon(true);
 			socketClientHandlerThread.start();
 
 		} catch (IOException e) {
@@ -35,6 +35,7 @@ public class SocketClient implements Client {
 	}
 
 	public void sendMessage(Message message) {
+		message.setName(clientName);
 		socketClientHandler.sendTransferObject(message);
 	}
 
@@ -89,6 +90,7 @@ public class SocketClient implements Client {
 	}
 
 	public void handleReceivedMessage(Message itemFromServer) {
+		support.firePropertyChange("messageAdded",null, itemFromServer);
 	}
 
 

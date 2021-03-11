@@ -1,10 +1,10 @@
 package client.gui.viewmodel;
 
 import client.model.lobbymodel.ClientLobbyModel;
+import client.model.lobbymodel.tabelobjects.GameData;
+import client.model.lobbymodel.tabelobjects.GameTableRow;
 import javafx.application.Platform;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import transferobjects.Message;
@@ -16,14 +16,15 @@ import java.beans.PropertyChangeListener;
 
 public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
-	private StringProperty txtMessage;
 
 	private ClientLobbyModel clientLobbyModel;
 
-	private ObservableList<GameRoomModel> observableGameRooms;
+	private ObservableList<GameTableRow> observableGameRooms;
+	private ObjectProperty<GameTableRow> selectedGameRoom;
 
-	private StringProperty testGameRoom;
 
+	private StringProperty txtMessage;
+	private ObservableList<String> lobbyChatMessages;
 
 
 	public LobbyViewModel(LobbyModel lobbyModel) {
@@ -31,37 +32,37 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		txtMessage = new SimpleStringProperty();
 
 		observableGameRooms = FXCollections.observableArrayList();
+		selectedGameRoom = new SimpleObjectProperty<>();
 
 		clientLobbyModel.addListener("gameRoomAdd",this);
+		clientLobbyModel.addListener("messageAdded", this);
 
-		testGameRoom = new SimpleStringProperty();
+		txtMessage = new SimpleStringProperty();
 
+		lobbyChatMessages = FXCollections.observableArrayList();
 
 	}
 
 
-	public ObservableList<GameRoomModel> getObservableGameRooms() {
+	public ObservableList<GameTableRow> getObservableGameRooms() {
 		return observableGameRooms;
 	}
 
+	public ObservableList<String> getLobbyChatMessages() {
+		return lobbyChatMessages;
+	}
 
-
-
-	public void join(int roomId) {
+	public void join() {
 		System.out.println("Lobby view Call join on client");
-		clientLobbyModel.join(null, roomId);
 
+		int gameRoomId = selectedGameRoom.getValue().getId();
+		clientLobbyModel.join(null, gameRoomId);
 
-		// TODO: Serveren skal give noget, som clienten skal kobles op til
-		// - Tror umiddlebart vi stadig bare skal sende en join request ned
 	}
 
 	public void host() {
 		clientLobbyModel.host();
 
-
-		// TODO: Server skal lave et game, som clienten skal kobles op til
-		// - Tror umiddlebart vi stadig bare skal sende en host request ned
 	}
 
 	public void sendMessage(Message message) {
@@ -70,19 +71,39 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 
 
-	public StringProperty testGameRoomProperty() {
-		return testGameRoom;
+	public StringProperty txtMessageProperty() {
+		return txtMessage;
 	}
 
+
+
+	public ObjectProperty<GameTableRow> selectedGameRoomProperty() {
+		return selectedGameRoom;
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("Lobby view detect change");
 		if (evt.getPropertyName().equals("gameRoomAdd")){
+			int roomNumber = (int) evt.getNewValue();
 			System.out.println("Set test room value " +  evt.getNewValue());
 
-			Platform.runLater(()-> testGameRoom.setValue(evt.getNewValue().toString()));
+			Platform.runLater(()-> {
+
+					observableGameRooms.add(new GameTableRow(
+							new GameData(roomNumber, "someNames")));
+
+					});
 
 		}
+
+		if (evt.getPropertyName().equals("messageAdded")){
+			System.out.println("lobbyViewModel detected incoming message");
+			Message message = (Message) evt.getNewValue();
+			String senderName = message.getName();
+			String txtMessage = message.getStringMessage();
+			lobbyChatMessages.add(senderName+ ": " + txtMessage);
+		}
+
 	}
 }

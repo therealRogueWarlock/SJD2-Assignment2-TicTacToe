@@ -40,13 +40,15 @@ public class ServerLobbyModel implements LobbyModel {
 
 		// joining the game room just added
 		join(socketServerHandler,gameRoomsId);
+
 		gameRoomsId++;
 
-		iChanged();
+		iChanged("gameRoomAdd",gameRoom);
 	}
 
-	public void addMessage() {
-
+	public void addMessage(Message message) {
+		chatRoom.addMessage(message);
+		iChanged("messageAdded", message);
 	}
 
 	public void addPlayer(String name) {
@@ -75,15 +77,16 @@ public class ServerLobbyModel implements LobbyModel {
 		gameRoom.addListener("win", socketServerHandler);
 		gameRoom.addListener("draw", socketServerHandler);
 		gameRoom.addListener("turnSwitch", socketServerHandler);
+		gameRoom.addListener("messageAdded", socketServerHandler);
 
-		System.out.println("all listeners added");
+
+		((ServerGameRoomModel) gameRoom).iChanged("turnSwitch",null);
 
 	}
 
 	public void sendMessage(Message message) {
 
 	}
-
 
 	@Override
 	public void addListener(String propertyName, PropertyChangeListener listener) {
@@ -99,9 +102,10 @@ public class ServerLobbyModel implements LobbyModel {
 		return gameRooms;
 	}
 
-	private void iChanged(){
+	private void iChanged(String eventType, Object newValue){
 		System.out.println("ServerLobby model detect change, fire change");
-		support.firePropertyChange("gameRoomAdd", null,gameRooms.get(gameRooms.size()-1));
+		support.firePropertyChange(eventType, null,newValue);
+
 	}
 
 

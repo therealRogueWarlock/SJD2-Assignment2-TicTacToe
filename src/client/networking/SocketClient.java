@@ -89,8 +89,15 @@ public class SocketClient implements Client {
 		support.firePropertyChange(requestFromServer.getType(),null, requestFromServer.getArg());
 	}
 
-	public void handleReceivedMessage(Message itemFromServer) {
-		support.firePropertyChange("messageAdded",null, itemFromServer);
+	public void handleReceivedMessage(Message message) {
+		if (message.getTarget().equals("Lobby")){
+			support.firePropertyChange("messageAddedLobby",null, message);
+		}else{
+			support.firePropertyChange("messageAddedGameRoom",null, message);
+		}
+
+
+
 	}
 
 

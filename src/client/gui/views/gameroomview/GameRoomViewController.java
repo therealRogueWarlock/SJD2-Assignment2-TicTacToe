@@ -52,14 +52,12 @@ public class GameRoomViewController implements ViewController {
 
 		gameInfo.textProperty().bind(gameRoomViewModel.winLabelProperty());
 
+		gameRoomViewModel.txtMessageProperty().bind(textToSendGameRoom.textProperty());
+
+		chatGameRoom.setItems(gameRoomViewModel.getGameRoomChatMessages());
+
 	}
 
-	public void sendMessageButton() {
-		if (!textToSendGameRoom.getText().isEmpty()) {
-			gameRoomViewModel.sendMessage(new Message(textToSendGameRoom.getText())); // FIXME: Skal gøres som property??
-			textToSendGameRoom.clear();
-		}
-	}
 
 	@Override
 	public void swapScene(String scene) throws IOException {
@@ -87,6 +85,12 @@ public class GameRoomViewController implements ViewController {
 		}
 	}
 
-    public void sendTextGameButton(ActionEvent actionEvent) {
+    public void sendTextGameButton() {
+		if (!textToSendGameRoom.getText().isEmpty()) {
+			Message newMessage = new Message(textToSendGameRoom.getText());
+			newMessage.setTarget("GameRoom");
+			gameRoomViewModel.sendMessage(newMessage);
+			textToSendGameRoom.clear();
+		}
     }
 }

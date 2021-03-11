@@ -24,6 +24,7 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 		this.client.addListener("win",this);
 		this.client.addListener("draw", this);
 		this.client.addListener("turnSwitch", this);
+		this.client.addListener("messageAddedGameRoom", this);
 
 	}
 

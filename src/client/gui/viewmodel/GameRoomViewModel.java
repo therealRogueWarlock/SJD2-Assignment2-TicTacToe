@@ -6,6 +6,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import transferobjects.Message;
 import transferobjects.Request;
 import transferobjects.TicTacToePiece;
@@ -26,6 +28,10 @@ public class GameRoomViewModel implements ViewModel {
 
 	private BooleanProperty turnSwitcher;
 
+	private ObservableList<String> gameRoomChatMessages;
+
+
+
 	public GameRoomViewModel(GameRoomModel gameRoomModel) {
 		this.clientGameRoomModel = (ClientGameRoomModel) gameRoomModel;
 
@@ -33,6 +39,7 @@ public class GameRoomViewModel implements ViewModel {
 		this.clientGameRoomModel.addListener("win", this);
 		this.clientGameRoomModel.addListener("draw", this);
 		this.clientGameRoomModel.addListener("turnSwitch", this);
+		this.clientGameRoomModel.addListener("messageAddedGameRoom",this);
 
 		txtMessage = new SimpleStringProperty();
 
@@ -45,6 +52,8 @@ public class GameRoomViewModel implements ViewModel {
 		}
 
 		winLabel = new SimpleStringProperty();
+
+		gameRoomChatMessages = FXCollections.observableArrayList();
 
 	}
 
@@ -69,7 +78,7 @@ public class GameRoomViewModel implements ViewModel {
 	}
 
 	public void sendMessage(Message message) {
-
+		clientGameRoomModel.sendMessage(message);
 	}
 
 	@Override
@@ -87,13 +96,25 @@ public class GameRoomViewModel implements ViewModel {
 			turnSwitcher.setValue(false);
 		} if (eventType.equals("turnSwitch")){
 			turnSwitcher.setValue(!turnSwitcher.getValue());
+		}if (evt.getPropertyName().equals("messageAddedGameRoom")){
+			System.out.println("gameRoom detected incoming message");
+			Message message = (Message) evt.getNewValue();
+			String senderName = message.getName();
+			String txtMessage = message.getStringMessage();
+			Platform.runLater(() ->gameRoomChatMessages.add(senderName+ ": " + txtMessage));
 		}
+
+
+
 	}
 
+	public ObservableList<String> getGameRoomChatMessages() {
+		return gameRoomChatMessages;
+	}
 
-
-
-
+	public StringProperty txtMessageProperty() {
+		return txtMessage;
+	}
 
 	public StringProperty winLabelProperty() {
 		return winLabel;

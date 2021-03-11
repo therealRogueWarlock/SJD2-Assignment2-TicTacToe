@@ -23,6 +23,7 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 	public ServerGameRoomModel() {
 		this.support = new PropertyChangeSupport(this);
 		ticTacToe = new TicTacToe();
+		chatRoom = new ChatRoom();
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		selectedGameRoom = new SimpleObjectProperty<>();
 
 		clientLobbyModel.addListener("gameRoomAdd", this);
-		clientLobbyModel.addListener("messageAdded", this);
+		clientLobbyModel.addListener("messageAddedLobby", this);
 
 		txtMessage = new SimpleStringProperty();
 
@@ -90,12 +90,13 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 		}
 
-		if (evt.getPropertyName().equals("messageAdded")) {
+		if (evt.getPropertyName().equals("messageAddedLobby")) {
 			System.out.println("lobbyViewModel detected incoming message");
 			Message message = (Message) evt.getNewValue();
 			String senderName = message.getName();
 			String txtMessage = message.getStringMessage();
 			Platform.runLater(() -> lobbyChatMessages.add(senderName + ": " + txtMessage));
+
 		}
 
 	}

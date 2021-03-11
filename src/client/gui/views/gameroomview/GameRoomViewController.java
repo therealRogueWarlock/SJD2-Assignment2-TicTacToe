@@ -85,7 +85,7 @@ public class GameRoomViewController implements ViewController {
 		}
 	}
 
-    public void sendTextGameButton() {
+	public void sendTextGameButton() {
 		if (!textToSendGameRoom.getText().isEmpty()) {
 			Message newMessage = new Message(textToSendGameRoom.getText());
 			newMessage.setTarget("GameRoom");
@@ -95,5 +95,5 @@ public class GameRoomViewController implements ViewController {
 		}
 
 
-    }
+	}
 }

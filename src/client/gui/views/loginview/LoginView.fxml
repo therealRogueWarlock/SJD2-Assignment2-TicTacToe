@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-
 
 <AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.views.loginview.LoginViewController">
    <children>
       <Button layoutX="235.0" layoutY="88.0" mnemonicParsing="false" onAction="#loginButton" text="Confirm" />
       <TextField fx:id="gamerTagLabel" layoutX="86.0" layoutY="88.0" promptText="Insert gamertag" />
+      <Label fx:id="error" layoutX="86.0" layoutY="142.0" textFill="RED" />
    </children>
 </AnchorPane>

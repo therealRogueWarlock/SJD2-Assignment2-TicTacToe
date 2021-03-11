@@ -5,12 +5,14 @@ import client.gui.viewmodel.LoginViewModel;
 import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
 public class LoginViewController implements ViewController {
 
+	public Label error;
 	@FXML private TextField gamerTagLabel;
 	private LoginViewModel loginViewModel;
 	private ViewHandler viewHandler;

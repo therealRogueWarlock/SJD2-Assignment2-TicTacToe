@@ -1,5 +1,6 @@
 package client.networking;
 
+import transferobjects.Message;
 import transferobjects.Request;
 
 import java.io.IOException;
@@ -31,34 +32,46 @@ public class SocketClientHandler implements Runnable {
 	public void receiveTransferObject() {
 		// TODO: Unsure of this one
 
-
 	}
 
+
+
 	public void handleTransferObject(Object itemFromServer) {
-//		if (itemFromServer instanceof Request) {
-//			socketClient.handleReceivedRequest((Request) itemFromServer); // FIXME: Unsure
-//		} else if (itemFromServer instanceof Message) {
-//			socketClient.handleReceivedMessage((Message) itemFromServer); // FIXME: Unsure
-//		}
+
+		if (itemFromServer instanceof Request) {
+			socketClient.handleReceivedRequest((Request) itemFromServer); // FIXME: Unsure
+		} else if (itemFromServer instanceof Message) {
+			socketClient.handleReceivedMessage((Message) itemFromServer); // FIXME: Unsure
+		}
+
 	}
 
 	@Override
 	public void run() {
 		Object itemFromServer;
-		String loginName = socketClient.getClientName();
 
+		String loginName = socketClient.getClientName();
 		sendTransferObject(new Request("Login", loginName));
 
 
 		while (true) { // FIXME: Reevaluate use of infinite loop
-			/*try {
+
+			try {
 
 				itemFromServer = inFromServer.readUnshared();
 				handleTransferObject(itemFromServer);
 
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("SocketClientHandler - run()\n" + e.getMessage());
-			}*/
+				break;
+			}
+
 		}
 	}
+
+	public void sendHostRequest(){
+		sendTransferObject(new Request("Host", socketClient.getClientName()));
+	}
+
+
 }

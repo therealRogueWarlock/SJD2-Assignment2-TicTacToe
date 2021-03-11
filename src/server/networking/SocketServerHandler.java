@@ -5,25 +5,25 @@ import server.model.lobbymodel.ServerLobbyModel;
 import transferobjects.Message;
 import transferobjects.Request;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SocketServerHandler implements Runnable {
+public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	private Socket socket;
 	private ObjectOutputStream outToClient;
 	private ObjectInputStream inFromClient;
 	private ServerGameRoomModel serverGameRoomModel;
-	private ServerLobbyModel serverLobbyModel;
 	private SocketServer socketServer;
 
-	public SocketServerHandler(Socket socket, ServerLobbyModel serverLobbyModel, SocketServer socketServer) throws IOException {
+	public SocketServerHandler(Socket socket, SocketServer socketServer) throws IOException {
 		this.socket = socket;
 		outToClient = new ObjectOutputStream(socket.getOutputStream());
 		inFromClient = new ObjectInputStream(socket.getInputStream());
-		this.serverLobbyModel = serverLobbyModel;
 		this.socketServer = socketServer;
 
 	}
@@ -47,7 +47,7 @@ public class SocketServerHandler implements Runnable {
 
 	}
 
-	public void sendRequest(Request request) throws IOException {
+	public void sendTransferObject(Request request) throws IOException {
 		outToClient.writeObject(request);
 	}
 
@@ -67,9 +67,15 @@ public class SocketServerHandler implements Runnable {
 	}
 
 	private void handleRequest(Request request) {
+
 		if (request.getType().equals("Login")){
 			socketServer.loginPlayer((String) request.getArg());
 		}
+
+		if (request.getType().equals("Host")){
+			socketServer.createGameRoom((String) request.getArg());
+		}
+
 	}
 
 	private void handleMessage(Message message) {
@@ -86,4 +92,13 @@ public class SocketServerHandler implements Runnable {
 		return serverGameRoomModel;
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		try {
+			sendTransferObject(new Request(evt.getPropertyName(), evt.getNewValue()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

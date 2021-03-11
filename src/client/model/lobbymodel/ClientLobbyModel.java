@@ -4,14 +4,19 @@ import client.networking.Client;
 import transferobjects.Message;
 import util.LobbyModel;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
-public class ClientLobbyModel implements LobbyModel {
+public class ClientLobbyModel implements LobbyModel, PropertyChangeListener {
 
 	private Client client;
+	private PropertyChangeSupport support;
 
 	public ClientLobbyModel(Client client) {
+		support = new PropertyChangeSupport(this);
 		this.client = client;
+		this.client.addListener("gameRoomAdd",this);
 	}
 
 	public void join() {
@@ -19,7 +24,7 @@ public class ClientLobbyModel implements LobbyModel {
 	}
 
 	public void host() {
-
+		client.hostGame();
 	}
 
 	public void sendMessage(String msg) {
@@ -33,11 +38,16 @@ public class ClientLobbyModel implements LobbyModel {
 
 	@Override
 	public void addListener(String propertyName, PropertyChangeListener listener) {
-
+		support.addPropertyChangeListener(propertyName, listener);
 	}
 
 	@Override
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
+		support.removePropertyChangeListener(propertyName, listener);
+	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		support.firePropertyChange(evt);
 	}
 }

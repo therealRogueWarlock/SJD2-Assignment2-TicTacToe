@@ -21,8 +21,7 @@ public class LoginViewModel implements ViewModel {
 	}
 
 	public boolean tryLogin() {
-		if (validateLoginName()) {
-
+		if (validLoginName()) {
 			clientLoginModel.login(name.getValue());
 			return true;
 		}
@@ -39,7 +38,7 @@ public class LoginViewModel implements ViewModel {
 	}
 
 
-	private Boolean validateLoginName(){
+	private Boolean validLoginName(){
 		return name.getValue() != null && !(name.getValue().contains(" "));
 	}
 

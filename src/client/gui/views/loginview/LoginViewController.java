@@ -34,7 +34,7 @@ public class LoginViewController implements ViewController {
 
 		if (loginViewModel.tryLogin()){
 			try {
-				swapScene("lobby");
+				swapScene("Lobby");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

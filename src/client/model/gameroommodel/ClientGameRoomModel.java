@@ -22,6 +22,8 @@ public class ClientGameRoomModel implements GameRoomModel {
 		client.sendRequest(new Request("place", new TicTacToePiece(x, y, piece)));
 	}
 
+
+
 	@Override
 	public void sendMessage(Message msg) {
 		client.sendMessage(msg);
@@ -35,6 +37,23 @@ public class ClientGameRoomModel implements GameRoomModel {
 	@Override
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 
+	}
+
+
+
+	@Override
+	public int getRoomId() {
+		return 0;
+	}
+
+	@Override
+	public String getPlayerCount() {
+		return ";";
+	}
+
+	@Override
+	public String getPlayerNames() {
+		return "";
 	}
 
 }

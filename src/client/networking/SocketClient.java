@@ -3,17 +3,22 @@ package client.networking;
 import transferobjects.Message;
 import transferobjects.Request;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.Socket;
 
 public class SocketClient implements Client {
+
+	private PropertyChangeSupport support;
 
 	private String clientName;
 
 	private SocketClientHandler socketClientHandler;
 
 	public void start() {
+		support = new PropertyChangeSupport(this);
 
 		try {
 
@@ -39,7 +44,7 @@ public class SocketClient implements Client {
 	}
 
 	public void hostGame() {
-
+		socketClientHandler.sendHostRequest();
 	}
 
 
@@ -58,13 +63,33 @@ public class SocketClient implements Client {
 		socketClientHandler.sendTransferObject(request);
 	}
 
+
+
+
 	@Override
 	public void addListener(String propertyName, PropertyChangeListener listener) {
-
+		support.addPropertyChangeListener(propertyName, listener);
 	}
 
 	@Override
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
+		support.removePropertyChangeListener(propertyName, listener);
+	}
+
+
+
+
+
+	public void handleReceivedRequest(Request requestFromServer) {
+
+		support.firePropertyChange(requestFromServer.getType(),null,requestFromServer.getArg());
 
 	}
+
+	public void handleReceivedMessage(Message itemFromServer) {
+	}
+
+
+
+
 }

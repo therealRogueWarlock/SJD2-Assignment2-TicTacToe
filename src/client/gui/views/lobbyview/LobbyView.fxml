@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.views.lobbyview.LobbyViewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.views.lobbyview.LobbyViewController">
     <children>
         <ButtonBar layoutX="14.0" layoutY="346.0" prefHeight="40.0" prefWidth="200.0">
             <buttons>
@@ -20,7 +19,7 @@
                 <Button mnemonicParsing="false" onAction="#quitGame" text="Quit" />
             </buttons>
         </ButtonBar>
-        <TableView layoutX="14.0" layoutY="14.0" prefHeight="308.0" prefWidth="265.0">
+        <TableView fx:id="gameRooms" layoutX="14.0" layoutY="14.0" prefHeight="308.0" prefWidth="265.0">
             <columns>
                 <TableColumn fx:id="listRoomNumber" prefWidth="75.0" text="Room" />
                 <TableColumn fx:id="listPlayerAmount" prefWidth="75.0" text="Players" />

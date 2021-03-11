@@ -21,8 +21,10 @@ public class SocketServer {
             while (true) {
 
                 Socket socket = serverSocket.accept();
+                SocketServerHandler socketServerHandler = new SocketServerHandler(socket, this);
+                serverLobbyModel.addListener("gameRoomAdd", socketServerHandler);
 
-                Thread socketThread = new Thread(new SocketServerHandler(socket, serverLobbyModel, this));
+                Thread socketThread = new Thread(socketServerHandler);
                 socketThread.start();
 
             }
@@ -34,6 +36,11 @@ public class SocketServer {
     public void loginPlayer(String playerName){
         serverLobbyModel.addPlayer(playerName);
     }
+
+    public void createGameRoom(String playerName){
+        serverLobbyModel.host(playerName);
+    }
+
 
     public ServerLobbyModel getServerLobbyModel() {
         return serverLobbyModel;

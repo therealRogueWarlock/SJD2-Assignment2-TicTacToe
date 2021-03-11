@@ -16,6 +16,7 @@ public class ServerModelTester {
         while(true){
 
             System.out.println(serverLobbyModel.getPlayers());
+            System.out.println(serverLobbyModel.getGameRooms());
 
             try {
                 Thread.sleep(5000);

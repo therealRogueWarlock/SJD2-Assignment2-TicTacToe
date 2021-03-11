@@ -17,12 +17,15 @@ public class SocketServerHandler implements Runnable {
 	private ObjectInputStream inFromClient;
 	private ServerGameRoomModel serverGameRoomModel;
 	private ServerLobbyModel serverLobbyModel;
+	private SocketServer socketServer;
 
-	public SocketServerHandler(Socket socket, ServerLobbyModel serverLobbyModel) throws IOException {
+	public SocketServerHandler(Socket socket, ServerLobbyModel serverLobbyModel, SocketServer socketServer) throws IOException {
 		this.socket = socket;
 		outToClient = new ObjectOutputStream(socket.getOutputStream());
 		inFromClient = new ObjectInputStream(socket.getInputStream());
 		this.serverLobbyModel = serverLobbyModel;
+		this.socketServer = socketServer;
+
 	}
 
 	@Override
@@ -63,7 +66,9 @@ public class SocketServerHandler implements Runnable {
 	}
 
 	private void handleRequest(Request request) {
-		// TODO: check request types
+		if (request.getType().equals("Login")){
+			socketServer.loginPlayer((String) request.getArg());
+		}
 	}
 
 	private void handleMessage(Message message) {

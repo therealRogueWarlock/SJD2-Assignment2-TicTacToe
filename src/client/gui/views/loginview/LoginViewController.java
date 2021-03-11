@@ -25,17 +25,22 @@ public class LoginViewController implements ViewController {
 
 	@Override
 	public void swapScene(String scene) throws IOException {
-		viewHandler.openView("Lobby");
+		viewHandler.openView(scene);
 	}
 
 	public void loginButton() {
-		loginViewModel.login();
 
-		try {
-			swapScene("lobby");
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (loginViewModel.tryLogin()){
+			try {
+				swapScene("lobby");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
+
 	}
+
+
+
 }

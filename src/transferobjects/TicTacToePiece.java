@@ -1,6 +1,8 @@
 package transferobjects;
 
-public class TicTacToePiece {
+import java.io.Serializable;
+
+public class TicTacToePiece implements Serializable {
 	int x, y;
 	char piece;
 

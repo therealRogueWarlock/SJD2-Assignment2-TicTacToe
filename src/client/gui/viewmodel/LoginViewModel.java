@@ -20,8 +20,13 @@ public class LoginViewModel implements ViewModel {
 
 	}
 
-	public void login() {
-		clientLoginModel.login(name.getValue());
+	public boolean tryLogin() {
+		if (validateLoginName()) {
+
+			clientLoginModel.login(name.getValue());
+			return true;
+		}
+		return false;
 	}
 
 	public StringProperty nameProperty() {
@@ -32,4 +37,11 @@ public class LoginViewModel implements ViewModel {
 	public void propertyChange(PropertyChangeEvent evt) {
 
 	}
+
+
+	private Boolean validateLoginName(){
+		return name.getValue() != null && !(name.getValue().contains(" "));
+	}
+
+
 }

@@ -22,7 +22,7 @@ public class SocketServer {
 
                 Socket socket = serverSocket.accept();
 
-                Thread socketThread = new Thread(new SocketServerHandler(socket, serverLobbyModel));
+                Thread socketThread = new Thread(new SocketServerHandler(socket, serverLobbyModel, this));
                 socketThread.start();
 
             }
@@ -31,4 +31,20 @@ public class SocketServer {
     }
 
 
+    public void loginPlayer(String playerName){
+        serverLobbyModel.addPlayer(playerName);
+    }
+
+    public ServerLobbyModel getServerLobbyModel() {
+        return serverLobbyModel;
+    }
+
+
+    public void run() {
+        try {
+            start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

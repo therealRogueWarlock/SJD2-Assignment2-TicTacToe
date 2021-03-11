@@ -21,4 +21,7 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/.idea/.gitignore
+/.idea
+/SJD2-Assignment2-TicTacToe.iml
+/out
+

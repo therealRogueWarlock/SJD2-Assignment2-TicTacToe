@@ -6,6 +6,7 @@ import transferobjects.Request;
 import transferobjects.TicTacToePiece;
 import util.GameRoomModel;
 
+
 public class ClientGameRoomModel implements GameRoomModel {
 
 	private Client client;

@@ -17,11 +17,12 @@ public class SocketServer {
     public void start() throws IOException {
 
         try (ServerSocket serverSocket = new ServerSocket(1235)) {
-            System.out.println("server.Server running");
+            System.out.println("Server running");
             while (true) {
 
                 Socket socket = serverSocket.accept();
                 SocketServerHandler socketServerHandler = new SocketServerHandler(socket, this);
+
                 serverLobbyModel.addListener("gameRoomAdd", socketServerHandler);
 
                 Thread socketThread = new Thread(socketServerHandler);
@@ -37,8 +38,8 @@ public class SocketServer {
         serverLobbyModel.addPlayer(playerName);
     }
 
-    public void createGameRoom(String playerName){
-        serverLobbyModel.host(playerName);
+    public void createGameRoom(SocketServerHandler socketServerHandler, String playerName){
+        serverLobbyModel.host(socketServerHandler, playerName);
     }
 
 
@@ -54,4 +55,12 @@ public class SocketServer {
             e.printStackTrace();
         }
     }
+
+    public void joinGameRoom(SocketServerHandler socketServerHandler, int roomId) {
+        System.out.println("SocketServer call join on server lobby model");
+        serverLobbyModel.join(socketServerHandler, roomId);
+
+    }
+
+
 }

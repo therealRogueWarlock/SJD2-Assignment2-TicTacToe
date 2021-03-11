@@ -3,7 +3,6 @@ package client.networking;
 import transferobjects.Message;
 import transferobjects.Request;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -39,11 +38,13 @@ public class SocketClient implements Client {
 		socketClientHandler.sendTransferObject(message);
 	}
 
-	public void joinGame(String playerName) {
-
+	public void joinGame(int roomId) {
+		System.out.println("SocketClient ask socketClient handler to send join request");
+		socketClientHandler.sendJoinRequest(roomId);
 	}
 
 	public void hostGame() {
+		System.out.println("Socket client ask socketClient handler to send hos request.");
 		socketClientHandler.sendHostRequest();
 	}
 
@@ -60,10 +61,14 @@ public class SocketClient implements Client {
 
 	@Override
 	public void sendRequest(Request request) {
+		System.out.println("Client ask clientHanlder to send object to server");
 		socketClientHandler.sendTransferObject(request);
 	}
 
-
+	@Override
+	public String getName() {
+		return getClientName();
+	}
 
 
 	@Override
@@ -78,12 +83,9 @@ public class SocketClient implements Client {
 
 
 
-
-
 	public void handleReceivedRequest(Request requestFromServer) {
-
-		support.firePropertyChange(requestFromServer.getType(),null,requestFromServer.getArg());
-
+		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change" );
+		support.firePropertyChange(requestFromServer.getType(),null, requestFromServer.getArg());
 	}
 
 	public void handleReceivedMessage(Message itemFromServer) {

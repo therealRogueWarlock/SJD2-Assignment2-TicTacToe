@@ -4,11 +4,28 @@ import java.io.Serializable;
 
 public class TicTacToePiece implements Serializable {
 	int x, y;
-	char piece;
+	String piece;
 
-	public TicTacToePiece(int x, int y, char piece) {
+	public TicTacToePiece(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.piece = piece;
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public String getPiece() {
+		return piece;
+	}
+
+
+	public void setPiece(String name){
+		piece = name;
+	}
+
 }

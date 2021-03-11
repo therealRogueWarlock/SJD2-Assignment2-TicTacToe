@@ -19,9 +19,7 @@ public class ClientLobbyModel implements LobbyModel, PropertyChangeListener {
 		this.client.addListener("gameRoomAdd",this);
 	}
 
-	public void join() {
 
-	}
 
 	public void host() {
 		client.hostGame();
@@ -48,6 +46,13 @@ public class ClientLobbyModel implements LobbyModel, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("ClientLobby Model detect change" + evt.getPropertyName());
 		support.firePropertyChange(evt);
+	}
+
+	public void join(Object obj, int roomId) {
+		System.out.println("lobbyModelCAll joinGame on client");
+		client.joinGame(roomId);
+
 	}
 }

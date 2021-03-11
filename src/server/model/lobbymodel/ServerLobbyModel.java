@@ -1,5 +1,8 @@
 package server.model.lobbymodel;
 
+import server.networking.SocketServer;
+import server.networking.SocketServerHandler;
+import util.GameRoomModel;
 import util.LobbyModel;
 import server.model.gameroommodel.ServerGameRoomModel;
 import server.model.chatmodel.ChatRoom;
@@ -27,16 +30,18 @@ public class ServerLobbyModel implements LobbyModel {
 
 	}
 
-	public void join() {
-
-	}
 
 
-	public void host(String playerName) {
+	public void host(SocketServerHandler socketServerHandler, String playerName) {
 		ServerGameRoomModel gameRoom = new ServerGameRoomModel();
 		gameRoom.addPlayerInfo(playerName);
 		gameRoom.addId(gameRoomsId);
 		gameRooms.add(gameRoom);
+
+		// joining the game room just added
+		join(socketServerHandler,gameRoomsId);
+		gameRoomsId++;
+
 		iChanged();
 	}
 
@@ -58,10 +63,26 @@ public class ServerLobbyModel implements LobbyModel {
 		return playerList.getPlayers();
 	}
 
-	public void sendMessage(Message message) {
+	@Override
+	public void join(Object object, int roomId) {
+
+		GameRoomModel gameRoom = getGameRoomById(roomId);
+		SocketServerHandler socketServerHandler = (SocketServerHandler) object;
+		socketServerHandler.setServerGameRoomModel(gameRoom);
+		System.out.println("Adding " + socketServerHandler +" to "+ roomId + " " + gameRoom );
+
+		gameRoom.addListener("piecePlaced", socketServerHandler);
+		gameRoom.addListener("win", socketServerHandler);
+		gameRoom.addListener("draw", socketServerHandler);
+		gameRoom.addListener("turnSwitch", socketServerHandler);
+
+		System.out.println("all listeners added");
 
 	}
 
+	public void sendMessage(Message message) {
+
+	}
 
 
 	@Override
@@ -79,11 +100,21 @@ public class ServerLobbyModel implements LobbyModel {
 	}
 
 	private void iChanged(){
-		support.firePropertyChange("gameRoomAdd", null,gameRooms);
+		System.out.println("ServerLobby model detect change, fire change");
+		support.firePropertyChange("gameRoomAdd", null,gameRooms.get(gameRooms.size()-1));
 	}
 
 
 
+	private GameRoomModel getGameRoomById(int id){
+		for (GameRoomModel gameRoom: gameRooms){
+			if(gameRoom.getRoomId() == id){
+				return gameRoom;
+			}
+		}
+
+		return null;
+	}
 
 
 }

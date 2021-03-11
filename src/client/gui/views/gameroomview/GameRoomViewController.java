@@ -4,6 +4,7 @@ import client.core.ViewHandler;
 import client.gui.viewmodel.GameRoomViewModel;
 import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import java.io.IOException;
 
 public class GameRoomViewController implements ViewController {
 
+	public GridPane gameBoard;
 	@FXML private ListView chatGameRoom;
 	@FXML private TextField textToSendGameRoom;
 	private ViewHandler viewHandler;
@@ -32,6 +34,18 @@ public class GameRoomViewController implements ViewController {
 	public void init(ViewHandler viewHandler, ViewModel model) {
 		this.viewHandler = viewHandler;
 		gameRoomViewModel = (GameRoomViewModel) model;
+
+
+
+		int index = 0;
+		for (Node button:gameBoard.getChildren()){
+
+			if (button instanceof Button){
+				((Button) button).textProperty().bind(gameRoomViewModel.getSlots().get(index));
+			}
+			index++;
+		}
+
 	}
 
 	@Override
@@ -46,11 +60,13 @@ public class GameRoomViewController implements ViewController {
 		try {
 			Node button = mouseEvent.getPickResult().getIntersectedNode();
 			if (button instanceof Button) {
-				System.out.println(button.getParent());
+
 				int col = GridPane.getColumnIndex(button);
 				int row = GridPane.getRowIndex(button);
+
+				gameRoomViewModel.placePiece(col,row);
+
 				// TODO: Fortæl serveren at der skal sættes en brik på x,y. Brikker er ikke bundet til en spiller endnu
-				System.out.println(col + " : " + row);
 			} else {
 				System.out.println("Didn't click on the button");
 			}
@@ -58,4 +74,7 @@ public class GameRoomViewController implements ViewController {
 			System.out.println(runtimeException.getMessage());
 		}
 	}
+
+    public void sendTextGameButton(ActionEvent actionEvent) {
+    }
 }

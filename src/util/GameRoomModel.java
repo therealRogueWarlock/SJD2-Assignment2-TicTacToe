@@ -1,10 +1,11 @@
 package util;
 
 import transferobjects.Message;
+import transferobjects.TicTacToePiece;
 
 public interface GameRoomModel extends Subject {
 
-	void placePiece(int x, int y, char piece);
+	void placePiece(TicTacToePiece ticTacToePiece);
 
 	int getRoomId();
 

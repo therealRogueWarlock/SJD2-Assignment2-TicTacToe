@@ -10,11 +10,13 @@ public interface Client extends Subject {
 
 	void sendMessage(Message message);
 
-	void joinGame(String playerName);
+	void joinGame(int roomId);
 
 	void hostGame();
 
 	void setClientName(String name);
 
 	void sendRequest(Request request);
+
+    String getName();
 }

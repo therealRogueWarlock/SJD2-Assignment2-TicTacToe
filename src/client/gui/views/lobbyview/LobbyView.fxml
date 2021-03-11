@@ -34,6 +34,7 @@
         </Label>
         <Button layoutX="534.0" layoutY="354.0" mnemonicParsing="false" onAction="#sendTextLobby" text="Send" />
         <TextField fx:id="textToSendLobby" layoutX="373.0" layoutY="354.0" prefHeight="25.0" prefWidth="154.0" promptText="Text to send" />
+      <Label fx:id="gameRoomTest" layoutX="300.0" layoutY="85.0" onMouseClicked="#joinTestGame" text="Label" />
     </children>
 
 </AnchorPane>

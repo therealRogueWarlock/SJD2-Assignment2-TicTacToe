@@ -33,6 +33,8 @@ public class GameRoomViewController implements ViewController, PropertyChangeLis
 	private BooleanProperty myTurn;
 
 	public void init(ViewHandler viewHandler, ViewModel model) {
+		//TODO: reset viewModel.
+
 		this.viewHandler = viewHandler;
 		gameRoomViewModel = (GameRoomViewModel) model;
 

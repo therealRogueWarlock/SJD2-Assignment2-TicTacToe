@@ -35,6 +35,7 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		selectedGameRoom = new SimpleObjectProperty<>();
 
 		clientLobbyModel.addListener("gameRoomAdd", this);
+		clientLobbyModel.addListener("gameRoomDel", this);
 		clientLobbyModel.addListener("messageAddedLobby", this);
 
 		txtMessage = new SimpleStringProperty();
@@ -84,10 +85,13 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("Lobby view detect change");
-		int roomNumber = ((GameRoomModel) evt.getNewValue()).getRoomId(); // MVVM - Må en fælles klasse fra UTIL bruges her?
 		switch (evt.getPropertyName()) {
-			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow(new GameData(roomNumber, "someNames"))));
-			case "gameRoomDel" -> Platform.runLater(() -> observableGameRooms.removeIf(row -> row.getId() == roomNumber));
+			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow(new GameData((int) evt.getNewValue(), "someNames"))));
+			case "gameRoomDel" -> Platform.runLater(() -> {
+				System.out.println("LobbyViewModel, get delete room event");
+				observableGameRooms.removeIf(row -> row.getId() == (int) evt.getNewValue());
+			});
+
 			case "messageAddedLobby" -> {
 				System.out.println("lobbyViewModel detected incoming message");
 				Message message = (Message) evt.getNewValue();
@@ -96,6 +100,5 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 				Platform.runLater(() -> lobbyChatMessages.add(senderName + ": " + txtMessage));
 			}
 		}
-
 	}
 }

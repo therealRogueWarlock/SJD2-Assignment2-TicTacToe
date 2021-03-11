@@ -28,6 +28,7 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 		inFromClient = new ObjectInputStream(socket.getInputStream());
 		this.socketServer = socketServer;
 
+
 	}
 
 	@Override
@@ -100,6 +101,7 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	}
 
+
 	public void setServerGameRoomModel(GameRoomModel gameRoomModel) {
 		this.serverGameRoomModel = (ServerGameRoomModel) gameRoomModel;
 	}
@@ -114,7 +116,8 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 			String eventType = evt.getPropertyName();
 
 			switch (eventType) {
-				case "gameRoomAdd", "piecePlaced", "win", "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
+				case "piecePlaced", "win", "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
+				case "gameRoomDel" -> requestBroadcast(new Request(eventType, evt.getNewValue()));
 				case "messageAdded" -> sendTransferObject(evt.getNewValue());
 			}
 
@@ -122,4 +125,15 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 			e.printStackTrace();
 		}
 	}
+
+	public void requestBroadcast(Request request){
+		try {
+			socketServer.broadcast(request);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 }

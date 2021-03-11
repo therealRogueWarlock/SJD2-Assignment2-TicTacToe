@@ -85,7 +85,7 @@ public class SocketClient implements Client {
 
 
 	public void handleReceivedRequest(Request requestFromServer) {
-//		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change" );
+		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change" );
 		support.firePropertyChange(requestFromServer.getType(),null, requestFromServer.getArg());
 	}
 

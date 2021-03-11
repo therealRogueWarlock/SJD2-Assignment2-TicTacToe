@@ -17,6 +17,7 @@ public class ClientLobbyModel implements LobbyModel, PropertyChangeListener {
 		support = new PropertyChangeSupport(this);
 		this.client = client;
 		this.client.addListener("gameRoomAdd",this);
+		this.client.addListener("gameRoomDel",this);
 		this.client.addListener("messageAddedLobby", this);
 	}
 
@@ -48,7 +49,7 @@ public class ClientLobbyModel implements LobbyModel, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-//		System.out.println("ClientLobby Model detect change" + evt.getPropertyName());
+		System.out.println("ClientLobby Model detect change" + evt.getPropertyName());
 		support.firePropertyChange(evt);
 	}
 

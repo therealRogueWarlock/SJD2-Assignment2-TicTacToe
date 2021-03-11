@@ -50,7 +50,6 @@ public class LobbyViewController implements ViewController {
 		lobbyChat.setItems(lobbyViewModel.getLobbyChatMessages());
 
 
-
 	}
 
 

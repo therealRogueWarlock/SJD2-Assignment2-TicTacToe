@@ -100,6 +100,7 @@ public class GameRoomViewModel implements ViewModel, Subject {
 		else if (eventType.equals("draw")) {
 			Platform.runLater(() -> winLabel.setValue(eventType));
 			turnSwitcher.setValue(false);
+			returnToLobby();
 		}
 		else if (eventType.equals("turnSwitch")) {
 			turnSwitcher.setValue(!turnSwitcher.getValue());
@@ -114,7 +115,9 @@ public class GameRoomViewModel implements ViewModel, Subject {
 	}
 
 	private void returnToLobby() {
+
 		support.firePropertyChange("ViewChange", "GameRoom", "Lobby");
+
 	}
 
 	public ObservableList<String> getGameRoomChatMessages() {

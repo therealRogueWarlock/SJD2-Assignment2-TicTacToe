@@ -35,9 +35,15 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 
 		if (ticTacToe.checkForWin(ticTacToePiece.getPiece())) {
 			iChanged("win", ticTacToePiece.getPiece());
+			System.out.println("Send gameRoomDel");
+			iChanged("gameRoomDel", gameRoomId);
+
 
 		} else if (ticTacToe.checkDraw()) {
 			iChanged("draw", null);
+
+			iChanged("gameRoomDel", gameRoomId);
+
 		}
 		iChanged("turnSwitch", null);
 	}

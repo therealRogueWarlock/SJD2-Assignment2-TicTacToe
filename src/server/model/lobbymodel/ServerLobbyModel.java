@@ -41,9 +41,9 @@ public class ServerLobbyModel implements LobbyModel {
 		// joining the game room just added
 		join(socketServerHandler,gameRoomsId);
 
-		gameRoomsId++;
+		iChanged("gameRoomAdd",gameRoomsId);
 
-		iChanged("gameRoomAdd",gameRoom);
+		gameRoomsId++;
 	}
 
 	public void addMessage(Message message) {
@@ -78,10 +78,9 @@ public class ServerLobbyModel implements LobbyModel {
 		gameRoom.addListener("draw", socketServerHandler);
 		gameRoom.addListener("turnSwitch", socketServerHandler);
 		gameRoom.addListener("messageAdded", socketServerHandler);
-
+		gameRoom.addListener("gameRoomDel", socketServerHandler);
 
 		((ServerGameRoomModel) gameRoom).iChanged("turnSwitch",null);
-
 	}
 
 	public void sendMessage(Message message) {

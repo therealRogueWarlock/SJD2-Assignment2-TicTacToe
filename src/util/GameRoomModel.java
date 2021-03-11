@@ -4,7 +4,7 @@ import transferobjects.Message;
 
 public interface GameRoomModel extends Subject
 {
-    void placePiece();
+    void placePiece(int x, int y, char piece);
 
     void sendMessage(Message message);
 }

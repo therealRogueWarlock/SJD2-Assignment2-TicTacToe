@@ -81,7 +81,7 @@ public class GameRoomViewModel implements ViewModel, Subject {
 	}
 
 	public void sendMessage(Message message) {
-
+		clientGameRoomModel.sendMessage(message);
 	}
 
 	@Override

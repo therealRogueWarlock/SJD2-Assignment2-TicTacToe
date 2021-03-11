@@ -4,6 +4,7 @@ import client.core.ViewHandler;
 import client.gui.viewmodel.GameRoomViewModel;
 import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -95,14 +96,20 @@ public class GameRoomViewController implements ViewController, PropertyChangeLis
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals("ViewChange")) {
-			try {
-				Thread.sleep(5000);
-				viewHandler.openView((String) evt.getNewValue());
-			} catch (InterruptedException | IOException e) {
-				e.printStackTrace();
-			}
-
+			new Thread(() -> {
+				try {
+					Thread.sleep(5000);
+					Platform.runLater(() -> {
+						try {
+							viewHandler.openView((String) evt.getNewValue());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					});
+				} catch (InterruptedException e) {
+					System.out.println(e.getMessage());
+				}
+			}).start();
 		}
-
 	}
 }

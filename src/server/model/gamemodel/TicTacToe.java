@@ -2,9 +2,10 @@ package server.model.gamemodel;
 
 import transferobjects.TicTacToePiece;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class TicTacToe {
+public class TicTacToe implements Serializable {
 	private String[][] b;
 	private String w, s;
 
@@ -22,20 +23,6 @@ public class TicTacToe {
 
 		if (b[x][y].equals(" ")) {
 			b[x][y] = piece;
-
-			/*checkForWin(piece);
-			if (w != null) {
-				System.out.println(w + " wins!");
-				return;
-			}
-			checkDraw();
-			if (s != null) {
-				System.out.println(s);
-				return;
-			}*/
-
-			System.out.println(Arrays.deepToString(b));
-			System.out.println("Piece " + b[x][y] + " placed at " + x + ", " + y);
 			return true;
 		}
 

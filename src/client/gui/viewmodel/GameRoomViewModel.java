@@ -92,18 +92,19 @@ public class GameRoomViewModel implements ViewModel, Subject {
 			TicTacToePiece newPiece = (TicTacToePiece) evt.getNewValue();
 			updateGameBoard(newPiece.getX(), newPiece.getY(), newPiece.getPiece());
 		}
-		if (eventType.equals("win")) {
+		else if (eventType.equals("win")) {
 			Platform.runLater(() -> winLabel.setValue((String) evt.getNewValue()));
 			turnSwitcher.setValue(false);
+			returnToLobby();
 		}
-		if (eventType.equals("draw")) {
+		else if (eventType.equals("draw")) {
 			Platform.runLater(() -> winLabel.setValue(eventType));
 			turnSwitcher.setValue(false);
 		}
-		if (eventType.equals("turnSwitch")) {
+		else if (eventType.equals("turnSwitch")) {
 			turnSwitcher.setValue(!turnSwitcher.getValue());
 		}
-		if (evt.getPropertyName().equals("messageAddedGameRoom")) {
+		else if (evt.getPropertyName().equals("messageAddedGameRoom")) {
 			System.out.println("gameRoom detected incoming message");
 			Message message = (Message) evt.getNewValue();
 			String senderName = message.getName();

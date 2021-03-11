@@ -114,10 +114,7 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 			String eventType = evt.getPropertyName();
 
 			switch (eventType) {
-				case "gameRoomAdd" -> sendTransferObject(new Request(evt.getPropertyName(), ((ServerGameRoomModel) evt.getNewValue()).getRoomId()));
-				case "piecePlaced" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
-				case "win" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
-				case "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, null));
+				case "gameRoomAdd", "piecePlaced", "win", "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
 				case "messageAdded" -> sendTransferObject(evt.getNewValue());
 			}
 

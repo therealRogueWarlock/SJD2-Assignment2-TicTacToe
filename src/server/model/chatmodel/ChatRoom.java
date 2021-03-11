@@ -2,9 +2,10 @@ package server.model.chatmodel;
 
 import transferobjects.Message;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ChatRoom {
+public class ChatRoom implements Serializable {
 	private ArrayList<Message> allMessages;
 
 	public ChatRoom() {

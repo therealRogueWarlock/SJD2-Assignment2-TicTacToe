@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import transferobjects.Message;
+import util.GameRoomModel;
 import util.LobbyModel;
 
 import java.beans.PropertyChangeEvent;
@@ -83,25 +84,17 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("Lobby view detect change");
-		if (evt.getPropertyName().equals("gameRoomAdd")) {
-			int roomNumber = (int) evt.getNewValue();
-			System.out.println("Set test room value " + evt.getNewValue());
-
-			Platform.runLater(() -> {
-
-				observableGameRooms.add(new GameTableRow(new GameData(roomNumber, "someNames")));
-
-			});
-
-		}
-
-		if (evt.getPropertyName().equals("messageAddedLobby")) {
-			System.out.println("lobbyViewModel detected incoming message");
-			Message message = (Message) evt.getNewValue();
-			String senderName = message.getName();
-			String txtMessage = message.getStringMessage();
-			Platform.runLater(() -> lobbyChatMessages.add(senderName + ": " + txtMessage));
-
+		int roomNumber = ((GameRoomModel) evt.getNewValue()).getRoomId(); // MVVM - Må en fælles klasse fra UTIL bruges her?
+		switch (evt.getPropertyName()) {
+			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow(new GameData(roomNumber, "someNames"))));
+			case "gameRoomDel" -> Platform.runLater(() -> observableGameRooms.removeIf(row -> row.getId() == roomNumber));
+			case "messageAddedLobby" -> {
+				System.out.println("lobbyViewModel detected incoming message");
+				Message message = (Message) evt.getNewValue();
+				String senderName = message.getName();
+				String txtMessage = message.getStringMessage();
+				Platform.runLater(() -> lobbyChatMessages.add(senderName + ": " + txtMessage));
+			}
 		}
 
 	}

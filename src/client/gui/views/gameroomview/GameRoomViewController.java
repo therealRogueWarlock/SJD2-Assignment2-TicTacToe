@@ -91,6 +91,9 @@ public class GameRoomViewController implements ViewController {
 			newMessage.setTarget("GameRoom");
 			gameRoomViewModel.sendMessage(newMessage);
 			textToSendGameRoom.clear();
+
 		}
+
+
     }
 }

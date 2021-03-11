@@ -6,12 +6,13 @@ import transferobjects.Request;
 import transferobjects.TicTacToePiece;
 import util.GameRoomModel;
 
+import java.beans.PropertyChangeSupport;
 
 public class ClientGameRoomModel implements GameRoomModel {
 
 	private Client client;
 
-	public ClientGameRoomModel(Client client) {
+	public ClientGameRoomModel(Client client)	 {
 		this.client = client;
 	}
 
@@ -27,7 +28,6 @@ public class ClientGameRoomModel implements GameRoomModel {
 
 	@Override
 	public void addListener(String propertyName, int listener) {
-
 	}
 
 	@Override

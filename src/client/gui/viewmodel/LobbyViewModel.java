@@ -1,8 +1,8 @@
 package client.gui.viewmodel;
 
 import client.model.lobbymodel.ClientLobbyModel;
-import client.model.lobbymodel.tabelobjects.GameData;
-import client.model.lobbymodel.tabelobjects.GameTableRow;
+import client.model.lobbymodel.tableobjects.GameData;
+import client.model.lobbymodel.tableobjects.GameTableRow;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,19 +11,15 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import transferobjects.Message;
-import util.GameRoomModel;
 import util.LobbyModel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class LobbyViewModel implements ViewModel, PropertyChangeListener {
-
 	private ClientLobbyModel clientLobbyModel;
-
 	private ObservableList<GameTableRow> observableGameRooms;
 	private ObjectProperty<GameTableRow> selectedGameRoom;
-
 	private StringProperty txtMessage;
 	private ObservableList<String> lobbyChatMessages;
 
@@ -42,14 +38,6 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 		lobbyChatMessages = FXCollections.observableArrayList();
 
-	}
-
-	public ObservableList<GameTableRow> getObservableGameRooms() {
-		return observableGameRooms;
-	}
-
-	public ObservableList<String> getLobbyChatMessages() {
-		return lobbyChatMessages;
 	}
 
 	public void join() {
@@ -72,6 +60,14 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 	public void sendMessage(Message message) {
 		clientLobbyModel.sendMessage(message);
+	}
+
+	public ObservableList<GameTableRow> getObservableGameRooms() {
+		return observableGameRooms;
+	}
+
+	public ObservableList<String> getLobbyChatMessages() {
+		return lobbyChatMessages;
 	}
 
 	public StringProperty txtMessageProperty() {

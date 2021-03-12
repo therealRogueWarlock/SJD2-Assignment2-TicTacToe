@@ -22,14 +22,12 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 public class GameRoomViewController implements ViewController, PropertyChangeListener {
-
 	@FXML private GridPane gameBoard;
 	@FXML private Label gameInfo;
 	@FXML private ListView chatGameRoom;
 	@FXML private TextField textToSendGameRoom;
 	private ViewHandler viewHandler;
 	private GameRoomViewModel gameRoomViewModel;
-
 	private BooleanProperty myTurn;
 
 	public void init(ViewHandler viewHandler, ViewModel model) {
@@ -60,14 +58,6 @@ public class GameRoomViewController implements ViewController, PropertyChangeLis
 		chatGameRoom.setItems(gameRoomViewModel.getGameRoomChatMessages());
 	}
 
-	@Override
-	public void swapScene(String scene) throws IOException {
-		// TODO: Hvis et spil slutter, så skal denne sende en tilbage til lobby view
-		viewHandler.openView(scene);
-		// FIXME: Ser gerne, vi kan få vores scene givet når et spil er slut, fremfor at hardcode en scene at gå til
-
-	}
-
 	public void placePiece(MouseEvent mouseEvent) {
 		try {
 			Node button = mouseEvent.getPickResult().getIntersectedNode();
@@ -93,6 +83,14 @@ public class GameRoomViewController implements ViewController, PropertyChangeLis
 			gameRoomViewModel.sendMessage(newMessage);
 			textToSendGameRoom.clear();
 		}
+	}
+
+	@Override
+	public void swapScene(String scene) throws IOException {
+		// TODO: Hvis et spil slutter, så skal denne sende en tilbage til lobby view
+		viewHandler.openView(scene);
+		// FIXME: Ser gerne, vi kan få vores scene givet når et spil er slut, fremfor at hardcode en scene at gå til
+
 	}
 
 	@Override

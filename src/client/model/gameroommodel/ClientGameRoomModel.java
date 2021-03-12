@@ -10,9 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-
 public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListener {
-
 	private PropertyChangeSupport support;
 	private Client client;
 
@@ -20,12 +18,11 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 		this.client = client;
 		support = new PropertyChangeSupport(this);
 
-		this.client.addListener("piecePlaced",this);
-		this.client.addListener("win",this);
+		this.client.addListener("piecePlaced", this);
+		this.client.addListener("win", this);
 		this.client.addListener("draw", this);
 		this.client.addListener("turnSwitch", this);
 		this.client.addListener("messageAddedGameRoom", this);
-
 
 	}
 
@@ -36,8 +33,6 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 		client.sendRequest(new Request("place", ticTacToePiece));
 
 	}
-
-
 
 	@Override
 	public void sendMessage(Message msg) {
@@ -53,8 +48,6 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
 	}
-
-
 
 	@Override
 	public int getRoomId() {

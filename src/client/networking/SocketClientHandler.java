@@ -17,8 +17,8 @@ public class SocketClientHandler implements Runnable {
 	public SocketClientHandler(Socket socket, SocketClient socketClient) throws IOException {
 		this.socket = socket;
 		this.socketClient = socketClient;
-		outToServer = new ObjectOutputStream(socket.getOutputStream());
-		inFromServer = new ObjectInputStream(socket.getInputStream());
+		outToServer = new ObjectOutputStream(this.socket.getOutputStream());
+		inFromServer = new ObjectInputStream(this.socket.getInputStream());
 	}
 
 	public void sendTransferObject(Object object) {
@@ -35,8 +35,6 @@ public class SocketClientHandler implements Runnable {
 
 	}
 
-
-
 	public void handleTransferObject(Object itemFromServer) {
 
 		if (itemFromServer instanceof Request) {
@@ -52,7 +50,7 @@ public class SocketClientHandler implements Runnable {
 	public void run() {
 		Object itemFromServer;
 
-		String loginName = socketClient.getClientName();
+		String loginName = socketClient.getName();
 		sendTransferObject(new Request("Login", loginName));
 
 //		System.out.println(loginName + " Logged in, listening to server");
@@ -73,10 +71,9 @@ public class SocketClientHandler implements Runnable {
 		}
 	}
 
-	public void sendHostRequest(){
-		sendTransferObject(new Request("Host", socketClient.getClientName()));
+	public void sendHostRequest() {
+		sendTransferObject(new Request("Host", socketClient.getName()));
 	}
-
 
 	public void sendJoinRequest(int roomId) {
 //		System.out.println("Send join request to room"+ roomId);

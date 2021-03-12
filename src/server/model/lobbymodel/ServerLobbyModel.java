@@ -1,6 +1,6 @@
 package server.model.lobbymodel;
 
-import server.networking.SocketServer;
+import transferobjects.GameData;
 import server.networking.SocketServerHandler;
 import util.GameRoomModel;
 import util.LobbyModel;
@@ -34,19 +34,19 @@ public class ServerLobbyModel implements LobbyModel {
 
 	public void host(SocketServerHandler socketServerHandler, String playerName) {
 		ServerGameRoomModel gameRoom = new ServerGameRoomModel();
-		gameRoom.addPlayerInfo(playerName);
 		gameRoom.addId(gameRoomsId);
 		gameRooms.add(gameRoom);
 
 		// joining the game room just added
-		join(socketServerHandler,gameRoomsId);
+		join(socketServerHandler,gameRoomsId, playerName);
 
-		iChanged("gameRoomAdd",gameRoomsId);
+		iChanged("gameRoomAdd",new GameData(gameRoomsId,playerName));
 
 		gameRoomsId++;
 	}
 
 	public void addMessage(Message message) {
+		System.out.println("Add message to lobby " + message.getName() + " " + message.getStringMessage());
 		chatRoom.addMessage(message);
 		iChanged("messageAdded", message);
 	}
@@ -66,11 +66,13 @@ public class ServerLobbyModel implements LobbyModel {
 	}
 
 	@Override
-	public void join(Object object, int roomId) {
+	public void join(Object object, int roomId, String playerName) {
 
-		GameRoomModel gameRoom = getGameRoomById(roomId);
+		ServerGameRoomModel gameRoom = (ServerGameRoomModel) getGameRoomById(roomId);
+		gameRoom.addPlayerInfo(playerName);
 		SocketServerHandler socketServerHandler = (SocketServerHandler) object;
 		socketServerHandler.setServerGameRoomModel(gameRoom);
+
 		System.out.println("Adding " + socketServerHandler +" to "+ roomId + " " + gameRoom );
 
 		gameRoom.addListener("piecePlaced", socketServerHandler);
@@ -80,7 +82,8 @@ public class ServerLobbyModel implements LobbyModel {
 		gameRoom.addListener("messageAdded", socketServerHandler);
 		gameRoom.addListener("gameRoomDel", socketServerHandler);
 
-		((ServerGameRoomModel) gameRoom).iChanged("turnSwitch",null);
+		gameRoom.iChanged("turnSwitch",null);
+
 	}
 
 	public void sendMessage(Message message) {
@@ -101,12 +104,6 @@ public class ServerLobbyModel implements LobbyModel {
 		return gameRooms;
 	}
 
-	private void iChanged(String eventType, Object newValue){
-		System.out.println("ServerLobby model detect change, fire change");
-		support.firePropertyChange(eventType, null,newValue);
-
-	}
-
 
 
 	private GameRoomModel getGameRoomById(int id){
@@ -117,6 +114,12 @@ public class ServerLobbyModel implements LobbyModel {
 		}
 
 		return null;
+	}
+
+	private void iChanged(String eventType, Object newValue){
+		System.out.println("ServerLobby model detect change, fire change");
+		support.firePropertyChange(eventType, null,newValue);
+
 	}
 
 

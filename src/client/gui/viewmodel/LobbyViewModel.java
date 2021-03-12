@@ -1,8 +1,8 @@
 package client.gui.viewmodel;
 
 import client.model.lobbymodel.ClientLobbyModel;
-import client.model.lobbymodel.tableobjects.GameData;
 import client.model.lobbymodel.tableobjects.GameTableRow;
+import transferobjects.GameData;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -17,9 +17,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class LobbyViewModel implements ViewModel, PropertyChangeListener {
+
 	private ClientLobbyModel clientLobbyModel;
+
 	private ObservableList<GameTableRow> observableGameRooms;
 	private ObjectProperty<GameTableRow> selectedGameRoom;
+
 	private StringProperty txtMessage;
 	private ObservableList<String> lobbyChatMessages;
 
@@ -40,17 +43,27 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 	}
 
-	public void join() {
-		System.out.println("Lobby view Call join on client");
+	public ObservableList<GameTableRow> getObservableGameRooms() {
+		return observableGameRooms;
+	}
 
-		int gameRoomId = 0;
+	public ObservableList<String> getLobbyChatMessages() {
+		return lobbyChatMessages;
+	}
+
+	public boolean join() {
+
+
 		try {
-			gameRoomId = selectedGameRoom.getValue().getId();
-			clientLobbyModel.join(null, gameRoomId);
+			GameTableRow selectedItem = selectedGameRoom.getValue();
+			if (selectedItem != null){
+				clientLobbyModel.join(null, selectedItem.getId(),null);
+				return true;
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
+		return false;
 	}
 
 	public void host() {
@@ -60,14 +73,6 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 	public void sendMessage(Message message) {
 		clientLobbyModel.sendMessage(message);
-	}
-
-	public ObservableList<GameTableRow> getObservableGameRooms() {
-		return observableGameRooms;
-	}
-
-	public ObservableList<String> getLobbyChatMessages() {
-		return lobbyChatMessages;
 	}
 
 	public StringProperty txtMessageProperty() {
@@ -82,7 +87,7 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("Lobby view detect change");
 		switch (evt.getPropertyName()) {
-			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow(new GameData((int) evt.getNewValue(), "someNames"))));
+			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow((GameData) evt.getNewValue())));
 			case "gameRoomDel" -> Platform.runLater(() -> {
 				System.out.println("LobbyViewModel, get delete room event");
 				observableGameRooms.removeIf(row -> row.getId() == (int) evt.getNewValue());

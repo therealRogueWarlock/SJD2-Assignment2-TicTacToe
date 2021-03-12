@@ -67,9 +67,9 @@ public class SocketServer implements PropertyChangeListener {
         }
     }
 
-    public void joinGameRoom(SocketServerHandler socketServerHandler, int roomId) {
+    public void joinGameRoom(SocketServerHandler socketServerHandler, int roomId, String playerName) {
 //        System.out.println("SocketServer call join on server lobby model");
-        serverLobbyModel.join(socketServerHandler, roomId);
+        serverLobbyModel.join(socketServerHandler, roomId, playerName);
 
     }
 
@@ -78,11 +78,10 @@ public class SocketServer implements PropertyChangeListener {
     }
 
 
-    public void broadcast(Request request) throws IOException {
+    public void broadcast(Object obj) throws IOException {
         for (SocketServerHandler socketServerHandler: socketServerHandlers){
-            socketServerHandler.sendTransferObject(request);
+            socketServerHandler.sendTransferObject(obj);
         }
-
     }
 
     @Override
@@ -94,14 +93,14 @@ public class SocketServer implements PropertyChangeListener {
 
         try {
             String eventType = evt.getPropertyName();
-
+            // gameRoomDel bliver stadig detected af socketServerHandler
             switch (eventType) {
+                case "messageAdded" ->  broadcast(evt.getNewValue());
                 case "gameRoomAdd", "gameRoomDel" -> broadcast(new Request(eventType, evt.getNewValue()));
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -21,9 +21,8 @@
         </ButtonBar>
         <TableView fx:id="gameRooms" layoutX="14.0" layoutY="14.0" prefHeight="308.0" prefWidth="265.0">
             <columns>
-                <TableColumn fx:id="listRoomId" prefWidth="75.0" text="Room" />
-                <TableColumn fx:id="listPlayerAmount" prefWidth="75.0" text="Players" />
-                <TableColumn fx:id="listPlayerNames" prefWidth="114.0" text="Names" />
+                <TableColumn fx:id="listRoomId" prefWidth="75.0" text="Room Id" />
+                <TableColumn fx:id="listPlayerNames" prefWidth="189.0" text="Host name" />
             </columns>
         </TableView>
         <ListView fx:id="lobbyChat" layoutX="372.0" layoutY="37.0" prefHeight="285.0" prefWidth="214.0" />

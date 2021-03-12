@@ -17,8 +17,8 @@ public class SocketClientHandler implements Runnable {
 	public SocketClientHandler(Socket socket, SocketClient socketClient) throws IOException {
 		this.socket = socket;
 		this.socketClient = socketClient;
-		outToServer = new ObjectOutputStream(this.socket.getOutputStream());
-		inFromServer = new ObjectInputStream(this.socket.getInputStream());
+		outToServer = new ObjectOutputStream(socket.getOutputStream());
+		inFromServer = new ObjectInputStream(socket.getInputStream());
 	}
 
 	public void sendTransferObject(Object object) {
@@ -35,6 +35,8 @@ public class SocketClientHandler implements Runnable {
 
 	}
 
+
+
 	public void handleTransferObject(Object itemFromServer) {
 
 		if (itemFromServer instanceof Request) {
@@ -46,20 +48,11 @@ public class SocketClientHandler implements Runnable {
 
 	}
 
-	public void sendHostRequest() {
-		sendTransferObject(new Request("Host", socketClient.getName()));
-	}
-
-	public void sendJoinRequest(int roomId) {
-//		System.out.println("Send join request to room"+ roomId);
-		sendTransferObject(new Request("Join", roomId));
-	}
-
 	@Override
 	public void run() {
 		Object itemFromServer;
 
-		String loginName = socketClient.getName();
+		String loginName = socketClient.getClientName();
 		sendTransferObject(new Request("Login", loginName));
 
 //		System.out.println(loginName + " Logged in, listening to server");
@@ -67,7 +60,7 @@ public class SocketClientHandler implements Runnable {
 
 			try {
 
-				itemFromServer = inFromServer.readUnshared();
+				itemFromServer = inFromServer.readObject();
 //				System.out.println("Got object from server");
 //				System.out.println("Handel object");
 				handleTransferObject(itemFromServer);
@@ -78,5 +71,17 @@ public class SocketClientHandler implements Runnable {
 			}
 
 		}
+	}
+
+	public void sendHostRequest(){
+		sendTransferObject(new Request("Host", socketClient.getClientName()));
+	}
+
+
+	public void sendJoinRequest(int roomId) {
+//		System.out.println("Send join request to room"+ roomId);
+		Request newJoinRequest = new Request("Join", roomId);
+		newJoinRequest.setArg2(socketClient.getClientName());
+		sendTransferObject(newJoinRequest);
 	}
 }

@@ -82,7 +82,7 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 			}
 			case "Join" -> {
 //				System.out.println("SocketServerHandler received join request");
-				socketServer.joinGameRoom(this, (Integer) request.getArg());
+				socketServer.joinGameRoom(this, (Integer) request.getArg(), (String) request.getArg2());
 			}
 			case "place" -> {
 //				System.out.println("Server received a place piece request");
@@ -118,17 +118,26 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 			switch (eventType) {
 				case "piecePlaced", "win", "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
 				case "gameRoomDel" -> requestBroadcast(new Request(eventType, evt.getNewValue()));
-				case "messageAdded" -> sendTransferObject(evt.getNewValue());
 			}
+			if (eventType.equals("messageAdded")){
+				Message message = (Message) evt.getNewValue();
+				if (message.getTarget().equals("Lobby")){
+					requestBroadcast(evt.getNewValue());
+				}else{
+					sendTransferObject(evt.getNewValue());
+				}
+
+			}
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void requestBroadcast(Request request){
+	public void requestBroadcast(Object object){
 		try {
-			socketServer.broadcast(request);
+			socketServer.broadcast(object);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

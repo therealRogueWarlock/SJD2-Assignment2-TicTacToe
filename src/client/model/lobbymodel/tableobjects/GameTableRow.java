@@ -1,5 +1,7 @@
 package client.model.lobbymodel.tableobjects;
 
+import transferobjects.GameData;
+
 public class GameTableRow {
 	private GameData game;
 

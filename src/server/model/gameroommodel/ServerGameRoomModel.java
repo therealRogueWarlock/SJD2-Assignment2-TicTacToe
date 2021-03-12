@@ -34,9 +34,16 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 		}
 
 		if (ticTacToe.checkForWin(ticTacToePiece.getPiece())) {
+			String winnerName = ticTacToePiece.getPiece();
 			iChanged("win", ticTacToePiece.getPiece());
-			System.out.println("Send gameRoomDel");
+
 			iChanged("gameRoomDel", gameRoomId);
+
+			Message newMessage = new Message(getPlayerNames() + " " +
+					"game has ended, "+ winnerName + "Won!" );
+
+			newMessage.setName("Lobby");
+			iChanged("messageAdded", newMessage);
 
 
 		} else if (ticTacToe.checkDraw()) {
@@ -55,12 +62,12 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 
 	@Override
 	public String getPlayerCount() {
-		return "Randomshit";
+		return null;
 	}
 
 	@Override
 	public String getPlayerNames() {
-		return "Morerandshit";
+		return players[0] + "/" + players[1];
 	}
 
 	public void sendMessage(Message message) {

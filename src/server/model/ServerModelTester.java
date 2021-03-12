@@ -15,8 +15,8 @@ public class ServerModelTester {
     public void start(){
         while(true){
 
-//            System.out.println(serverLobbyModel.getPlayers());
-//            System.out.println(serverLobbyModel.getGameRooms());
+            System.out.println(serverLobbyModel.getPlayers());
+            System.out.println(serverLobbyModel.getGameRooms().toString());
 
             try {
                 Thread.sleep(5000);
@@ -24,11 +24,5 @@ public class ServerModelTester {
                 e.printStackTrace();
             }
         }
-
-
-
     }
-
-
-
 }

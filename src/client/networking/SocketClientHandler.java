@@ -46,6 +46,15 @@ public class SocketClientHandler implements Runnable {
 
 	}
 
+	public void sendHostRequest() {
+		sendTransferObject(new Request("Host", socketClient.getName()));
+	}
+
+	public void sendJoinRequest(int roomId) {
+//		System.out.println("Send join request to room"+ roomId);
+		sendTransferObject(new Request("Join", roomId));
+	}
+
 	@Override
 	public void run() {
 		Object itemFromServer;
@@ -69,14 +78,5 @@ public class SocketClientHandler implements Runnable {
 			}
 
 		}
-	}
-
-	public void sendHostRequest() {
-		sendTransferObject(new Request("Host", socketClient.getName()));
-	}
-
-	public void sendJoinRequest(int roomId) {
-//		System.out.println("Send join request to room"+ roomId);
-		sendTransferObject(new Request("Join", roomId));
 	}
 }

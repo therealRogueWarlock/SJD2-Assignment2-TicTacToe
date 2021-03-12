@@ -1,4 +1,4 @@
-package client.model.lobbymodel.tabelobjects;
+package client.model.lobbymodel.tableobjects;
 
 public class GameTableRow {
 

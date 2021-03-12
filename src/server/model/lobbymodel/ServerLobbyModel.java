@@ -8,12 +8,13 @@ import transferobjects.Message;
 import util.GameRoomModel;
 import util.LobbyModel;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ServerLobbyModel implements LobbyModel {
+public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 
 	private ArrayList<ServerGameRoomModel> gameRooms;
 	private PlayerList playerList;
@@ -30,18 +31,7 @@ public class ServerLobbyModel implements LobbyModel {
 
 	}
 
-	public void host(SocketServerHandler socketServerHandler, String playerName) {
-		ServerGameRoomModel gameRoom = new ServerGameRoomModel();
-		gameRoom.addId(gameRoomsId);
-		gameRooms.add(gameRoom);
 
-		// joining the game room just added
-		join(socketServerHandler, gameRoomsId, playerName);
-
-		iChanged("gameRoomAdd", new GameData(gameRoomsId, playerName));
-
-		gameRoomsId++;
-	}
 
 	public void addMessage(Message message) {
 		System.out.println("Add message to lobby " + message.getName() + " " + message.getStringMessage());
@@ -59,11 +49,7 @@ public class ServerLobbyModel implements LobbyModel {
 
 	}
 
-	private void iChanged(String eventType, Object newValue) {
-		System.out.println("ServerLobby model detect change, fire change");
-		support.firePropertyChange(eventType, null, newValue);
 
-	}
 
 	public HashMap<Integer, String> getPlayers() {
 		return playerList.getPlayers();
@@ -82,6 +68,22 @@ public class ServerLobbyModel implements LobbyModel {
 
 		return null;
 	}
+
+	public void host(SocketServerHandler socketServerHandler, String playerName) {
+		ServerGameRoomModel gameRoom = new ServerGameRoomModel();
+		gameRoom.addId(gameRoomsId);
+		gameRooms.add(gameRoom);
+
+		gameRoom.addListener("resultMessage", this);
+
+		// joining the game room just added
+		join(socketServerHandler, gameRoomsId, playerName);
+
+		iChanged("gameRoomAdd", new GameData(gameRoomsId, playerName));
+
+		gameRoomsId++;
+	}
+
 
 	@Override
 	public void join(Object object, int roomId, String playerName) {
@@ -117,6 +119,16 @@ public class ServerLobbyModel implements LobbyModel {
 	@Override
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		addMessage((Message) evt.getNewValue());
+	}
+
+	private void iChanged(String eventType, Object newValue) {
+		System.out.println("ServerLobby model detect change, fire change");
+		support.firePropertyChange(eventType, null, newValue);
 	}
 
 }

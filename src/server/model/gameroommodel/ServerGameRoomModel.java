@@ -57,16 +57,16 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 
 			iChanged("gameRoomDel", gameRoomId);
 
-			Message newMessage = new Message(getPlayerNames() + " " +
-					"game has ended, "+ winnerName + "Won!" );
-
+			Message newMessage = new Message(getPlayerNames() + " : "+ winnerName + " Won!" );
 			newMessage.setName("Lobby");
-			iChanged("messageAdded", newMessage);
+			iChanged("resultMessage", newMessage);
+
 
 		} else if (ticTacToe.checkDraw()) {
 			iChanged("draw", null);
 
 			iChanged("gameRoomDel", gameRoomId);
+
 
 		}
 		iChanged("turnSwitch", null);
@@ -84,7 +84,7 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 
 	@Override
 	public String getPlayerNames() {
-		return players[0] + "/" + players[1];
+		return players[0] + " vs " + players[1];
 	}
 
 	@Override

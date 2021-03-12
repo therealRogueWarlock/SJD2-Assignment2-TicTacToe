@@ -132,7 +132,6 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 				} else {
 					sendTransferObject(evt.getNewValue());
 				}
-
 			}
 
 		} catch (IOException e) {

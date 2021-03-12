@@ -19,19 +19,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class GameRoomViewModel implements ViewModel, Subject {
-
 	private StringProperty txtMessage;
-
 	private StringProperty winLabel;
-
 	private ClientGameRoomModel clientGameRoomModel;
-
 	private ArrayList<StringProperty> slots;
-
 	private BooleanProperty turnSwitcher;
-
 	private ObservableList<String> gameRoomChatMessages;
-
 	private PropertyChangeSupport support;
 
 	public GameRoomViewModel(GameRoomModel gameRoomModel) {
@@ -46,7 +39,7 @@ public class GameRoomViewModel implements ViewModel, Subject {
 		resetRoom();
 	}
 
-	public void resetRoom(){
+	public void resetRoom() {
 		txtMessage = new SimpleStringProperty();
 
 		turnSwitcher = new SimpleBooleanProperty();
@@ -76,52 +69,22 @@ public class GameRoomViewModel implements ViewModel, Subject {
 		Platform.runLater(() -> slots.get(convert2dTo1d(x, y)).setValue(String.valueOf(symbol)));
 	}
 
-	private int convert2dTo1d(int x, int y) {
-		return (y * 3) + x;
-	}
-
-	public ArrayList<StringProperty> getSlots() {
-		return slots;
-	}
-
 	public void sendMessage(Message message) {
 		clientGameRoomModel.sendMessage(message);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		String eventType = evt.getPropertyName();
-		if (eventType.equals("piecePlaced")) {
-			System.out.println("GameViewModel detected piece placed event ");
-			TicTacToePiece newPiece = (TicTacToePiece) evt.getNewValue();
-			updateGameBoard(newPiece.getX(), newPiece.getY(), newPiece.getPiece());
-		}
-		else if (eventType.equals("win")) {
-			Platform.runLater(() -> winLabel.setValue((String) evt.getNewValue()));
-			turnSwitcher.setValue(false);
-			returnToLobby();
-		}
-		else if (eventType.equals("draw")) {
-			Platform.runLater(() -> winLabel.setValue(eventType));
-			turnSwitcher.setValue(false);
-			returnToLobby();
-		}
-		else if (eventType.equals("turnSwitch")) {
-			turnSwitcher.setValue(!turnSwitcher.getValue());
-		}
-		else if (evt.getPropertyName().equals("messageAddedGameRoom")) {
-			System.out.println("gameRoom detected incoming message");
-			Message message = (Message) evt.getNewValue();
-			String senderName = message.getName();
-			String txtMessage = message.getStringMessage();
-			Platform.runLater(() -> gameRoomChatMessages.add(senderName + ": " + txtMessage));
-		}
 	}
 
 	private void returnToLobby() {
 
 		support.firePropertyChange("ViewChange", "GameRoom", "Lobby");
 
+	}
+
+	private int convert2dTo1d(int x, int y) {
+		return (y * 3) + x;
+	}
+
+	public ArrayList<StringProperty> getSlots() {
+		return slots;
 	}
 
 	public ObservableList<String> getGameRoomChatMessages() {
@@ -141,6 +104,32 @@ public class GameRoomViewModel implements ViewModel, Subject {
 	}
 
 	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String eventType = evt.getPropertyName();
+		if (eventType.equals("piecePlaced")) {
+			System.out.println("GameViewModel detected piece placed event ");
+			TicTacToePiece newPiece = (TicTacToePiece) evt.getNewValue();
+			updateGameBoard(newPiece.getX(), newPiece.getY(), newPiece.getPiece());
+		} else if (eventType.equals("win")) {
+			Platform.runLater(() -> winLabel.setValue((String) evt.getNewValue()));
+			turnSwitcher.setValue(false);
+			returnToLobby();
+		} else if (eventType.equals("draw")) {
+			Platform.runLater(() -> winLabel.setValue(eventType));
+			turnSwitcher.setValue(false);
+			returnToLobby();
+		} else if (eventType.equals("turnSwitch")) {
+			turnSwitcher.setValue(!turnSwitcher.getValue());
+		} else if (evt.getPropertyName().equals("messageAddedGameRoom")) {
+			System.out.println("gameRoom detected incoming message");
+			Message message = (Message) evt.getNewValue();
+			String senderName = message.getName();
+			String txtMessage = message.getStringMessage();
+			Platform.runLater(() -> gameRoomChatMessages.add(senderName + ": " + txtMessage));
+		}
+	}
+
+	@Override
 	public void addListener(String propertyName, PropertyChangeListener listener) {
 		support.addPropertyChangeListener(propertyName, listener);
 	}
@@ -149,7 +138,4 @@ public class GameRoomViewModel implements ViewModel, Subject {
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
 	}
-
-
-
 }

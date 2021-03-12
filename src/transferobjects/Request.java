@@ -12,6 +12,10 @@ public class Request implements Serializable {
 		this.arg = arg;
 	}
 
+	public void setArg2(Object arg2) {
+		this.arg2 = arg2;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -22,10 +26,6 @@ public class Request implements Serializable {
 
 	public Object getArg2() {
 		return arg2;
-	}
-
-	public void setArg2(Object arg2) {
-		this.arg2 = arg2;
 	}
 
 }

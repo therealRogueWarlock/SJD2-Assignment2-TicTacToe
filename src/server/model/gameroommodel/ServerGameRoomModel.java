@@ -11,19 +11,37 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 public class ServerGameRoomModel implements GameRoomModel, Serializable {
-
 	private TicTacToe ticTacToe;
 	private ChatRoom chatRoom;
 	private int gameRoomId;
-
 	private String[] players = new String[2];
-
 	private PropertyChangeSupport support;
 
 	public ServerGameRoomModel() {
 		this.support = new PropertyChangeSupport(this);
 		ticTacToe = new TicTacToe();
 		chatRoom = new ChatRoom();
+	}
+
+	public void addPlayerInfo(String playerName) {
+		if (players[0] == null) {
+			players[0] = playerName;
+		} else if (players[1] == null) {
+			players[1] = playerName;
+		}
+	}
+
+	public void addId(int gameRoomId) {
+		this.gameRoomId = gameRoomId;
+	}
+
+	public void addMessage(Message message) {
+		chatRoom.addMessage(message);
+		iChanged("messageAdded", message);
+	}
+
+	public void iChanged(String type, Object newValue) {
+		support.firePropertyChange(type, null, newValue);
 	}
 
 	@Override
@@ -44,7 +62,6 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 
 			newMessage.setName("Lobby");
 			iChanged("messageAdded", newMessage);
-
 
 		} else if (ticTacToe.checkDraw()) {
 			iChanged("draw", null);
@@ -70,29 +87,9 @@ public class ServerGameRoomModel implements GameRoomModel, Serializable {
 		return players[0] + "/" + players[1];
 	}
 
+	@Override
 	public void sendMessage(Message message) {
 		chatRoom.addMessage(message);
-	}
-
-	public void addPlayerInfo(String playerName) {
-		if (players[0] == null) {
-			players[0] = playerName;
-		} else if (players[1] == null) {
-			players[1] = playerName;
-		}
-	}
-
-	public void addId(int gameRoomId) {
-		this.gameRoomId = gameRoomId;
-	}
-
-	public void addMessage(Message message) {
-		chatRoom.addMessage(message);
-		iChanged("messageAdded", message);
-	}
-
-	public void iChanged(String type, Object newValue) {
-		support.firePropertyChange(type, null, newValue);
 	}
 
 	@Override

@@ -17,12 +17,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class LobbyViewModel implements ViewModel, PropertyChangeListener {
-
 	private ClientLobbyModel clientLobbyModel;
-
 	private ObservableList<GameTableRow> observableGameRooms;
 	private ObjectProperty<GameTableRow> selectedGameRoom;
-
 	private StringProperty txtMessage;
 	private ObservableList<String> lobbyChatMessages;
 
@@ -43,12 +40,13 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 
 	}
 
-	public ObservableList<GameTableRow> getObservableGameRooms() {
-		return observableGameRooms;
+	public void host() {
+		clientLobbyModel.host();
+
 	}
 
-	public ObservableList<String> getLobbyChatMessages() {
-		return lobbyChatMessages;
+	public void sendMessage(Message message) {
+		clientLobbyModel.sendMessage(message);
 	}
 
 	public boolean join() {
@@ -66,13 +64,12 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		return false;
 	}
 
-	public void host() {
-		clientLobbyModel.host();
-
+	public ObservableList<GameTableRow> getObservableGameRooms() {
+		return observableGameRooms;
 	}
 
-	public void sendMessage(Message message) {
-		clientLobbyModel.sendMessage(message);
+	public ObservableList<String> getLobbyChatMessages() {
+		return lobbyChatMessages;
 	}
 
 	public StringProperty txtMessageProperty() {

@@ -21,33 +21,6 @@ public class SocketClientHandler implements Runnable {
 		inFromServer = new ObjectInputStream(socket.getInputStream());
 	}
 
-	public void sendTransferObject(Object object) {
-//		System.out.println("Send object to server");
-		try {
-			outToServer.writeUnshared(object);
-		} catch (IOException e) {
-			System.out.println("ERROR: SocketClientHandler - sendTransferObject(Object object)\n" + e.getMessage());
-		}
-	}
-
-	public void receiveTransferObject() {
-		// TODO: Unsure of this one
-
-	}
-
-
-
-	public void handleTransferObject(Object itemFromServer) {
-
-		if (itemFromServer instanceof Request) {
-//			System.out.println("ask socket Client to handle request");
-			socketClient.handleReceivedRequest((Request) itemFromServer); // FIXME: Unsure
-		} else if (itemFromServer instanceof Message) {
-			socketClient.handleReceivedMessage((Message) itemFromServer); // FIXME: Unsure
-		}
-
-	}
-
 	@Override
 	public void run() {
 		Object itemFromServer;
@@ -73,10 +46,34 @@ public class SocketClientHandler implements Runnable {
 		}
 	}
 
-	public void sendHostRequest(){
-		sendTransferObject(new Request("Host", socketClient.getClientName()));
+	public void sendTransferObject(Object object) {
+//		System.out.println("Send object to server");
+		try {
+			outToServer.writeUnshared(object);
+		} catch (IOException e) {
+			System.out.println("ERROR: SocketClientHandler - sendTransferObject(Object object)\n" + e.getMessage());
+		}
 	}
 
+	public void receiveTransferObject() {
+		// TODO: Unsure of this one
+
+	}
+
+	public void handleTransferObject(Object itemFromServer) {
+
+		if (itemFromServer instanceof Request) {
+//			System.out.println("ask socket Client to handle request");
+			socketClient.handleReceivedRequest((Request) itemFromServer); // FIXME: Unsure
+		} else if (itemFromServer instanceof Message) {
+			socketClient.handleReceivedMessage((Message) itemFromServer); // FIXME: Unsure
+		}
+
+	}
+
+	public void sendHostRequest() {
+		sendTransferObject(new Request("Host", socketClient.getClientName()));
+	}
 
 	public void sendJoinRequest(int roomId) {
 //		System.out.println("Send join request to room"+ roomId);

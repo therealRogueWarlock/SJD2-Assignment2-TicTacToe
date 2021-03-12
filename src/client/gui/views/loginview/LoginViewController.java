@@ -17,6 +17,7 @@ public class LoginViewController implements ViewController {
 	private LoginViewModel loginViewModel;
 	private ViewHandler viewHandler;
 
+	@Override
 	public void init(ViewHandler viewHandler, ViewModel model) {
 		this.viewHandler = viewHandler;
 		this.loginViewModel = (LoginViewModel) model;
@@ -25,14 +26,9 @@ public class LoginViewController implements ViewController {
 
 	}
 
-	@Override
-	public void swapScene(String scene) throws IOException {
-		viewHandler.openView(scene);
-	}
-
 	public void loginButton() {
 
-		if (loginViewModel.tryLogin()){
+		if (loginViewModel.tryLogin()) {
 			try {
 				swapScene("Lobby");
 			} catch (IOException e) {
@@ -40,9 +36,11 @@ public class LoginViewController implements ViewController {
 			}
 		}
 
-
 	}
 
-
+	@Override
+	public void swapScene(String scene) throws IOException {
+		viewHandler.openView(scene);
+	}
 
 }

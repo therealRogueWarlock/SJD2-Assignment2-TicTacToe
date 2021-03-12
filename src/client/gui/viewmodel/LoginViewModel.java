@@ -8,9 +8,7 @@ import util.LoginModel;
 import java.beans.PropertyChangeEvent;
 
 public class LoginViewModel implements ViewModel {
-
 	private StringProperty name;
-
 	private ClientLoginModel clientLoginModel;
 
 	public LoginViewModel(LoginModel loginModel) {
@@ -32,15 +30,13 @@ public class LoginViewModel implements ViewModel {
 		return name;
 	}
 
+	private boolean validLoginName() {
+		return name.getValue() != null && !(name.getValue().contains(" "));
+	}
+
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
 	}
-
-
-	private Boolean validLoginName(){
-		return name.getValue() != null && !(name.getValue().contains(" "));
-	}
-
 
 }

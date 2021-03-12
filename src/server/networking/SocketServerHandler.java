@@ -24,10 +24,9 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	public SocketServerHandler(Socket socket, SocketServer socketServer) throws IOException {
 		this.socket = socket;
-		outToClient = new ObjectOutputStream(socket.getOutputStream());
-		inFromClient = new ObjectInputStream(socket.getInputStream());
+		outToClient = new ObjectOutputStream(this.socket.getOutputStream());
+		inFromClient = new ObjectInputStream(this.socket.getInputStream());
 		this.socketServer = socketServer;
-
 
 	}
 
@@ -57,17 +56,23 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 		outToClient.writeObject(object);
 	}
 
-	public Object receiveTransferObject() throws IOException, ClassNotFoundException {
-		return inFromClient.readObject();
-
+	public void setServerGameRoomModel(GameRoomModel gameRoomModel) {
+		this.serverGameRoomModel = (ServerGameRoomModel) gameRoomModel;
 	}
 
-	private void handleReceivedObject(Object obj) {
-		if (obj instanceof Request) {
-			handleRequest((Request) obj);
+	public void requestBroadcast(Object object) {
+		try {
+			socketServer.broadcast(object);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-		} else if (obj instanceof Message) {
-			handleMessage((Message) obj);
+	private void handleMessage(Message message) {
+		if (message.getTarget().equals("Lobby")) {
+			socketServer.addMessage(message);
+		} else {
+			serverGameRoomModel.addMessage(message);
 		}
 
 	}
@@ -92,18 +97,19 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 
 	}
 
-	private void handleMessage(Message message) {
-		if (message.getTarget().equals("Lobby")) {
-			socketServer.addMessage(message);
-		} else {
-			serverGameRoomModel.addMessage(message);
+	private void handleReceivedObject(Object obj) {
+		if (obj instanceof Request) {
+			handleRequest((Request) obj);
+
+		} else if (obj instanceof Message) {
+			handleMessage((Message) obj);
 		}
 
 	}
 
+	public Object receiveTransferObject() throws IOException, ClassNotFoundException {
+		return inFromClient.readObject();
 
-	public void setServerGameRoomModel(GameRoomModel gameRoomModel) {
-		this.serverGameRoomModel = (ServerGameRoomModel) gameRoomModel;
 	}
 
 	public ServerGameRoomModel getServerGameRoomModel() {
@@ -119,30 +125,19 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 				case "piecePlaced", "win", "draw", "turnSwitch" -> sendTransferObject(new Request(eventType, evt.getNewValue()));
 				case "gameRoomDel" -> requestBroadcast(new Request(eventType, evt.getNewValue()));
 			}
-			if (eventType.equals("messageAdded")){
+			if (eventType.equals("messageAdded")) {
 				Message message = (Message) evt.getNewValue();
-				if (message.getTarget().equals("Lobby")){
+				if (message.getTarget().equals("Lobby")) {
 					requestBroadcast(evt.getNewValue());
-				}else{
+				} else {
 					sendTransferObject(evt.getNewValue());
 				}
 
 			}
 
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	public void requestBroadcast(Object object){
-		try {
-			socketServer.broadcast(object);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-
 
 }

@@ -3,7 +3,6 @@ package server.model.lobbymodel;
 import java.util.HashMap;
 
 public class PlayerList {
-
 	private HashMap<Integer, String> players;
 	private int playerIds = 0;
 

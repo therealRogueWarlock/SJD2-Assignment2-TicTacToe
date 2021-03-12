@@ -6,38 +6,33 @@ import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
 import client.model.lobbymodel.tableobjects.GameTableRow;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import transferobjects.Message;
-
 
 import java.io.IOException;
 
 public class LobbyViewController implements ViewController {
-
-
 	@FXML private TextField textToSendLobby;
 	@FXML private ListView lobbyChat;
-
-
 	@FXML private TableView<GameTableRow> gameRooms;
 	@FXML private TableColumn<GameTableRow, Integer> listRoomId;
 	@FXML private TableColumn<GameTableRow, String> listPlayerNames;
-
-
 	private ViewHandler viewHandler;
 	private LobbyViewModel lobbyViewModel;
 
+	@Override
 	public void init(ViewHandler viewHandler, ViewModel model) {
 		this.viewHandler = viewHandler;
 		lobbyViewModel = (LobbyViewModel) model;
-
 
 		gameRooms.setItems(lobbyViewModel.getObservableGameRooms());
 
 		listRoomId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		listPlayerNames.setCellValueFactory(new PropertyValueFactory<>("players"));
-
 
 		lobbyViewModel.selectedGameRoomProperty().bind(gameRooms.getSelectionModel().selectedItemProperty());
 
@@ -45,9 +40,7 @@ public class LobbyViewController implements ViewController {
 
 		lobbyChat.setItems(lobbyViewModel.getLobbyChatMessages());
 
-
 	}
-
 
 	public void hostGame() throws IOException {
 		lobbyViewModel.host();
@@ -62,22 +55,12 @@ public class LobbyViewController implements ViewController {
 		}
 	}
 
-	@Override
-	public void swapScene(String scene) throws IOException {
-		viewHandler.openView(scene);
-	}
-
-
-
-
 	public void quitGame() {
 		System.exit(1);
 	}
 
-
-
 	public void joinGame() {
-		if (lobbyViewModel.join()){
+		if (lobbyViewModel.join()) {
 			try {
 				swapScene("GameRoom");
 			} catch (IOException e) {
@@ -85,6 +68,10 @@ public class LobbyViewController implements ViewController {
 			}
 		}
 
+	}
 
+	@Override
+	public void swapScene(String scene) throws IOException {
+		viewHandler.openView(scene);
 	}
 }

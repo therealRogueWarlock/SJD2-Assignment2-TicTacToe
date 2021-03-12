@@ -10,7 +10,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-
 public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListener {
 
 	private PropertyChangeSupport support;
@@ -20,12 +19,11 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 		this.client = client;
 		support = new PropertyChangeSupport(this);
 
-		this.client.addListener("piecePlaced",this);
-		this.client.addListener("win",this);
+		this.client.addListener("piecePlaced", this);
+		this.client.addListener("win", this);
 		this.client.addListener("draw", this);
 		this.client.addListener("turnSwitch", this);
 		this.client.addListener("messageAddedGameRoom", this);
-
 
 	}
 
@@ -36,8 +34,6 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 		client.sendRequest(new Request("place", ticTacToePiece));
 
 	}
-
-
 
 	@Override
 	public void sendMessage(Message msg) {
@@ -54,7 +50,11 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 		support.removePropertyChangeListener(propertyName, listener);
 	}
 
-
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println("game room model recieved evet: " + evt.getPropertyName());
+		support.firePropertyChange(evt);
+	}
 
 	@Override
 	public int getRoomId() {
@@ -69,11 +69,5 @@ public class ClientGameRoomModel implements GameRoomModel, PropertyChangeListene
 	@Override
 	public String getPlayerNames() {
 		return "";
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("game room model recieved evet: " + evt.getPropertyName());
-		support.firePropertyChange(evt);
 	}
 }

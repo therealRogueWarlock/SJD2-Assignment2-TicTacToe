@@ -11,21 +11,21 @@ public class TicTacToePiece implements Serializable {
 		this.y = y;
 	}
 
-	public int getX() {
-		return x;
-	}
+	public void setPiece(String name) {
 
-	public int getY() {
-		return y;
+		piece = name;
 	}
 
 	public String getPiece() {
 		return piece;
 	}
 
+	public int getX() {
+		return x;
+	}
 
-	public void setPiece(String name){
-		piece = name;
+	public int getY() {
+		return y;
 	}
 
 }

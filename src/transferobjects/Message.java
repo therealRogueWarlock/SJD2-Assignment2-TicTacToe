@@ -13,16 +13,16 @@ public class Message implements Serializable {
 		targetName = "Lobby";
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public void setTarget(String target) {
 		targetName = target;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getStringMessage() {

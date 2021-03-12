@@ -1,12 +1,12 @@
 package server.model.lobbymodel;
 
-import transferobjects.GameData;
+import server.model.chatmodel.ChatRoom;
+import server.model.gameroommodel.ServerGameRoomModel;
 import server.networking.SocketServerHandler;
+import transferobjects.GameData;
+import transferobjects.Message;
 import util.GameRoomModel;
 import util.LobbyModel;
-import server.model.gameroommodel.ServerGameRoomModel;
-import server.model.chatmodel.ChatRoom;
-import transferobjects.Message;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -30,17 +30,15 @@ public class ServerLobbyModel implements LobbyModel {
 
 	}
 
-
-
 	public void host(SocketServerHandler socketServerHandler, String playerName) {
 		ServerGameRoomModel gameRoom = new ServerGameRoomModel();
 		gameRoom.addId(gameRoomsId);
 		gameRooms.add(gameRoom);
 
 		// joining the game room just added
-		join(socketServerHandler,gameRoomsId, playerName);
+		join(socketServerHandler, gameRoomsId, playerName);
 
-		iChanged("gameRoomAdd",new GameData(gameRoomsId,playerName));
+		iChanged("gameRoomAdd", new GameData(gameRoomsId, playerName));
 
 		gameRoomsId++;
 	}
@@ -61,8 +59,28 @@ public class ServerLobbyModel implements LobbyModel {
 
 	}
 
-	public HashMap<Integer, String> getPlayers(){
+	private void iChanged(String eventType, Object newValue) {
+		System.out.println("ServerLobby model detect change, fire change");
+		support.firePropertyChange(eventType, null, newValue);
+
+	}
+
+	public HashMap<Integer, String> getPlayers() {
 		return playerList.getPlayers();
+	}
+
+	public ArrayList<ServerGameRoomModel> getGameRooms() {
+		return gameRooms;
+	}
+
+	private GameRoomModel getGameRoomById(int id) {
+		for (GameRoomModel gameRoom : gameRooms) {
+			if (gameRoom.getRoomId() == id) {
+				return gameRoom;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -73,7 +91,7 @@ public class ServerLobbyModel implements LobbyModel {
 		SocketServerHandler socketServerHandler = (SocketServerHandler) object;
 		socketServerHandler.setServerGameRoomModel(gameRoom);
 
-		System.out.println("Adding " + socketServerHandler +" to "+ roomId + " " + gameRoom );
+		System.out.println("Adding " + socketServerHandler + " to " + roomId + " " + gameRoom);
 
 		gameRoom.addListener("piecePlaced", socketServerHandler);
 		gameRoom.addListener("win", socketServerHandler);
@@ -82,10 +100,11 @@ public class ServerLobbyModel implements LobbyModel {
 		gameRoom.addListener("messageAdded", socketServerHandler);
 		gameRoom.addListener("gameRoomDel", socketServerHandler);
 
-		gameRoom.iChanged("turnSwitch",null);
+		gameRoom.iChanged("turnSwitch", null);
 
 	}
 
+	@Override
 	public void sendMessage(Message message) {
 
 	}
@@ -99,28 +118,5 @@ public class ServerLobbyModel implements LobbyModel {
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
 	}
-
-	public ArrayList<ServerGameRoomModel> getGameRooms() {
-		return gameRooms;
-	}
-
-
-
-	private GameRoomModel getGameRoomById(int id){
-		for (GameRoomModel gameRoom: gameRooms){
-			if(gameRoom.getRoomId() == id){
-				return gameRoom;
-			}
-		}
-
-		return null;
-	}
-
-	private void iChanged(String eventType, Object newValue){
-		System.out.println("ServerLobby model detect change, fire change");
-		support.firePropertyChange(eventType, null,newValue);
-
-	}
-
 
 }

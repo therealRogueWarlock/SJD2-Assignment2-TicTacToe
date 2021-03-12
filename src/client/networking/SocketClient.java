@@ -16,6 +16,7 @@ public class SocketClient implements Client {
 
 	private SocketClientHandler socketClientHandler;
 
+	@Override
 	public void start() {
 		support = new PropertyChangeSupport(this);
 
@@ -34,31 +35,46 @@ public class SocketClient implements Client {
 		}
 	}
 
+	public void handleReceivedRequest(Request requestFromServer) {
+		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change");
+		support.firePropertyChange(requestFromServer.getType(), null, requestFromServer.getArg());
+	}
+
+	public void handleReceivedMessage(Message message) {
+		if (message.getTarget().equals("Lobby")) {
+			support.firePropertyChange("messageAddedLobby", null, message);
+		} else {
+			support.firePropertyChange("messageAddedGameRoom", null, message);
+		}
+
+	}
+
+	public String getClientName() {
+		return clientName;
+	}
+
+	@Override
 	public void sendMessage(Message message) {
 		message.setName(clientName);
 		socketClientHandler.sendTransferObject(message);
 	}
 
+	@Override
 	public void joinGame(int roomId) {
 //		System.out.println("SocketClient ask socketClient handler to send join request");
 		socketClientHandler.sendJoinRequest(roomId);
 	}
 
+	@Override
 	public void hostGame() {
 //		System.out.println("Socket client ask socketClient handler to send hos request.");
 		socketClientHandler.sendHostRequest();
 	}
 
-
+	@Override
 	public void setClientName(String name) {
 		clientName = name;
 	}
-
-
-	public String getClientName(){
-		return clientName;
-	}
-
 
 	@Override
 	public void sendRequest(Request request) {
@@ -71,7 +87,6 @@ public class SocketClient implements Client {
 		return getClientName();
 	}
 
-
 	@Override
 	public void addListener(String propertyName, PropertyChangeListener listener) {
 		support.addPropertyChangeListener(propertyName, listener);
@@ -81,26 +96,5 @@ public class SocketClient implements Client {
 	public void removeListener(String propertyName, PropertyChangeListener listener) {
 		support.removePropertyChangeListener(propertyName, listener);
 	}
-
-
-
-	public void handleReceivedRequest(Request requestFromServer) {
-		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change" );
-		support.firePropertyChange(requestFromServer.getType(),null, requestFromServer.getArg());
-	}
-
-	public void handleReceivedMessage(Message message) {
-		if (message.getTarget().equals("Lobby")){
-			support.firePropertyChange("messageAddedLobby",null, message);
-		}else{
-			support.firePropertyChange("messageAddedGameRoom",null, message);
-		}
-
-
-
-	}
-
-
-
 
 }

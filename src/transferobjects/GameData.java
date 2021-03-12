@@ -12,27 +12,27 @@ public class GameData implements Serializable {
         this.players = players;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getPlayerCount() {
-        return playerCount;
     }
 
     public void setPlayerCount(String playerCount) {
         this.playerCount = playerCount;
     }
 
-    public String getPlayers() {
-        return players;
-    }
-
     public void setPlayers(String players) {
         this.players = players;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getPlayerCount() {
+        return playerCount;
+    }
+
+    public String getPlayers() {
+        return players;
     }
 }

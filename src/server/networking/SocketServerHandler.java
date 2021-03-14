@@ -93,6 +93,7 @@ public class SocketServerHandler implements Runnable, PropertyChangeListener {
 //				System.out.println("Server received a place piece request");
 				serverGameRoomModel.placePiece((TicTacToePiece) request.getArg());
 			}
+			case "update" -> socketServer.getServerData(this);
 		}
 
 	}

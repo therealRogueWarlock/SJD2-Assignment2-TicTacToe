@@ -33,7 +33,7 @@ public class SocketClientHandler implements Runnable {
 
 			try {
 
-				itemFromServer = inFromServer.readObject();
+				itemFromServer = receiveTransferObject();
 //				System.out.println("Got object from server");
 //				System.out.println("Handel object");
 				handleTransferObject(itemFromServer);
@@ -55,8 +55,8 @@ public class SocketClientHandler implements Runnable {
 		}
 	}
 
-	public void receiveTransferObject() {
-		// TODO: Unsure of this one
+	public Object receiveTransferObject() throws IOException, ClassNotFoundException {
+		return inFromServer.readObject();
 
 	}
 
@@ -64,9 +64,9 @@ public class SocketClientHandler implements Runnable {
 
 		if (itemFromServer instanceof Request) {
 //			System.out.println("ask socket Client to handle request");
-			socketClient.handleReceivedRequest((Request) itemFromServer); // FIXME: Unsure
+			socketClient.handleReceivedRequest((Request) itemFromServer);
 		} else if (itemFromServer instanceof Message) {
-			socketClient.handleReceivedMessage((Message) itemFromServer); // FIXME: Unsure
+			socketClient.handleReceivedMessage((Message) itemFromServer);
 		}
 
 	}
@@ -81,4 +81,9 @@ public class SocketClientHandler implements Runnable {
 		newJoinRequest.setArg2(socketClient.getClientName());
 		sendTransferObject(newJoinRequest);
 	}
+
+	public void sendUpdateRequest(){
+		sendTransferObject(new Request("update", null));
+	}
+
 }

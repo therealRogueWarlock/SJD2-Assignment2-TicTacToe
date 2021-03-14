@@ -5,6 +5,7 @@ import client.gui.viewmodel.LobbyViewModel;
 import client.gui.viewmodel.ViewModel;
 import client.gui.views.ViewController;
 import client.model.lobbymodel.tableobjects.GameTableRow;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -74,4 +75,11 @@ public class LobbyViewController implements ViewController {
 	public void swapScene(String scene) throws IOException {
 		viewHandler.openView(scene);
 	}
+
+    public void update() {
+		lobbyViewModel.update();
+    }
+
+
+
 }

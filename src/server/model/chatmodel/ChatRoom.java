@@ -17,7 +17,7 @@ public class ChatRoom implements Serializable {
 	}
 
 	public ArrayList<Message> getAllMessages() {
-		return allMessages;
+		return (ArrayList<Message>) allMessages.clone();
 	}
 
 }

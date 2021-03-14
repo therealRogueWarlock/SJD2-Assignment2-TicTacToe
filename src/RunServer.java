@@ -6,7 +6,7 @@ import java.io.IOException;
 public class RunServer {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         SocketServer socketServer = new SocketServer();
 
         new Thread(socketServer::run).start();

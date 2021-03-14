@@ -14,6 +14,8 @@ public interface Client extends Subject {
 
 	void hostGame();
 
+	void update();
+
 	void setClientName(String name);
 
 	void sendRequest(Request request);

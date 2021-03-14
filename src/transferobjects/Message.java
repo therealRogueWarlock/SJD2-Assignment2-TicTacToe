@@ -33,4 +33,8 @@ public class Message implements Serializable {
 		return targetName;
 	}
 
+	@Override
+	public String toString() {
+		return name+ ": " + message;
+	}
 }

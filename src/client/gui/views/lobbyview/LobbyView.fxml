@@ -12,10 +12,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.views.lobbyview.LobbyViewController">
     <children>
-        <ButtonBar layoutX="14.0" layoutY="346.0" prefHeight="40.0" prefWidth="200.0">
+        <ButtonBar layoutY="333.0" prefHeight="67.0" prefWidth="350.0">
             <buttons>
                 <Button mnemonicParsing="false" onAction="#joinGame" text="Join Game" />
                 <Button mnemonicParsing="false" onAction="#hostGame" text="Host" />
+            <Button mnemonicParsing="false" onAction="#update" text="Update" />
                 <Button mnemonicParsing="false" onAction="#quitGame" text="Quit" />
             </buttons>
         </ButtonBar>

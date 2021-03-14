@@ -28,7 +28,6 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 		this.playerList = new PlayerList();
 		this.chatRoom = new ChatRoom();
 		this.support = new PropertyChangeSupport(this);
-
 	}
 
 
@@ -36,6 +35,7 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 	public void addMessage(Message message) {
 		System.out.println("Add message to lobby " + message.getName() + " " + message.getStringMessage());
 		chatRoom.addMessage(message);
+		System.out.println(getAllMessages().toString());
 		iChanged("messageAdded", message);
 	}
 
@@ -49,7 +49,9 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 
 	}
 
-
+	public ArrayList<Message> getAllMessages() {
+		return chatRoom.getAllMessages();
+	}
 
 	public HashMap<Integer, String> getPlayers() {
 		return playerList.getPlayers();
@@ -59,14 +61,27 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 		return gameRooms;
 	}
 
+	public ArrayList<GameData> getAllGameRoomData(){
+		ArrayList<GameData> allDameRoomData = new ArrayList<>();
+		for (ServerGameRoomModel gameRoom: getGameRooms()){
+			allDameRoomData.add(new GameData(gameRoom.getRoomId(),
+					gameRoom.getPlayerNames()));
+		}
+		return allDameRoomData;
+	}
+
+
 	private GameRoomModel getGameRoomById(int id) {
 		for (GameRoomModel gameRoom : gameRooms) {
 			if (gameRoom.getRoomId() == id) {
 				return gameRoom;
 			}
 		}
-
 		return null;
+	}
+
+	private void removeGameRoomById(int id) {
+		gameRooms.removeIf(gameRoom -> gameRoom.getRoomId() == id);
 	}
 
 	public void host(SocketServerHandler socketServerHandler, String playerName) {
@@ -75,6 +90,7 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 		gameRooms.add(gameRoom);
 
 		gameRoom.addListener("resultMessage", this);
+		gameRoom.addListener("gameRoomDel",this);
 
 		// joining the game room just added
 		join(socketServerHandler, gameRoomsId, playerName);
@@ -89,20 +105,8 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 	public void join(Object object, int roomId, String playerName) {
 
 		ServerGameRoomModel gameRoom = (ServerGameRoomModel) getGameRoomById(roomId);
-		gameRoom.addPlayerInfo(playerName);
-		SocketServerHandler socketServerHandler = (SocketServerHandler) object;
-		socketServerHandler.setServerGameRoomModel(gameRoom);
 
-		System.out.println("Adding " + socketServerHandler + " to " + roomId + " " + gameRoom);
-
-		gameRoom.addListener("piecePlaced", socketServerHandler);
-		gameRoom.addListener("win", socketServerHandler);
-		gameRoom.addListener("draw", socketServerHandler);
-		gameRoom.addListener("turnSwitch", socketServerHandler);
-		gameRoom.addListener("messageAdded", socketServerHandler);
-		gameRoom.addListener("gameRoomDel", socketServerHandler);
-
-		gameRoom.iChanged("turnSwitch", null);
+		gameRoom.join((SocketServerHandler) object,playerName);
 
 	}
 
@@ -123,7 +127,11 @@ public class ServerLobbyModel implements LobbyModel, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		addMessage((Message) evt.getNewValue());
+		if (evt.getPropertyName().equals("resultMessage")){
+			addMessage((Message) evt.getNewValue());}
+		else if (evt.getPropertyName().equals("gameRoomDel")){
+			removeGameRoomById((Integer) evt.getNewValue());}
+
 	}
 
 	private void iChanged(String eventType, Object newValue) {

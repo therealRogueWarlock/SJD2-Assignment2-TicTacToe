@@ -37,7 +37,7 @@ public class SocketClient implements Client {
 
 	public void handleReceivedRequest(Request requestFromServer) {
 		System.out.println("SocketClient Recived Request " + requestFromServer.getType() + " , fire property change");
-		support.firePropertyChange(requestFromServer.getType(), null, requestFromServer.getArg());
+		support.firePropertyChange(requestFromServer.getType(), null, requestFromServer);
 	}
 
 	public void handleReceivedMessage(Message message) {
@@ -69,6 +69,10 @@ public class SocketClient implements Client {
 	public void hostGame() {
 //		System.out.println("Socket client ask socketClient handler to send hos request.");
 		socketClientHandler.sendHostRequest();
+	}
+
+	public void update(){
+		socketClientHandler.sendUpdateRequest();
 	}
 
 	@Override

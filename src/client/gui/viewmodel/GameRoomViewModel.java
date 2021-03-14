@@ -9,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import transferobjects.Message;
+import transferobjects.Request;
 import transferobjects.TicTacToePiece;
 import util.GameRoomModel;
 import util.Subject;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class GameRoomViewModel implements ViewModel, Subject {
 	private StringProperty txtMessage;
 	private StringProperty winLabel;
+	private BooleanProperty winLabelDisabled;
 	private ClientGameRoomModel clientGameRoomModel;
 	private ArrayList<StringProperty> slots;
 	private BooleanProperty turnSwitcher;
@@ -51,6 +53,8 @@ public class GameRoomViewModel implements ViewModel, Subject {
 		}
 
 		winLabel = new SimpleStringProperty();
+		winLabelDisabled = new SimpleBooleanProperty();
+		winLabelDisabled.setValue(true);
 
 		gameRoomChatMessages = FXCollections.observableArrayList();
 
@@ -103,29 +107,43 @@ public class GameRoomViewModel implements ViewModel, Subject {
 		return turnSwitcher;
 	}
 
+
+	public BooleanProperty winLabelDisabledProperty() {
+		return winLabelDisabled;
+	}
+
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String eventType = evt.getPropertyName();
-		if (eventType.equals("piecePlaced")) {
-			System.out.println("GameViewModel detected piece placed event ");
-			TicTacToePiece newPiece = (TicTacToePiece) evt.getNewValue();
-			updateGameBoard(newPiece.getX(), newPiece.getY(), newPiece.getPiece());
-		} else if (eventType.equals("win")) {
-			Platform.runLater(() -> winLabel.setValue((String) evt.getNewValue()));
-			turnSwitcher.setValue(false);
-			returnToLobby();
-		} else if (eventType.equals("draw")) {
-			Platform.runLater(() -> winLabel.setValue(eventType));
-			turnSwitcher.setValue(false);
-			returnToLobby();
-		} else if (eventType.equals("turnSwitch")) {
-			turnSwitcher.setValue(!turnSwitcher.getValue());
-		} else if (evt.getPropertyName().equals("messageAddedGameRoom")) {
-			System.out.println("gameRoom detected incoming message");
-			Message message = (Message) evt.getNewValue();
-			String senderName = message.getName();
-			String txtMessage = message.getStringMessage();
-			Platform.runLater(() -> gameRoomChatMessages.add(senderName + ": " + txtMessage));
+
+		switch (eventType) {
+			case "piecePlaced" -> {
+				Request eventRequestObject = (Request) evt.getNewValue();
+				System.out.println("GameViewModel detected piece placed event ");
+				TicTacToePiece newPiece = (TicTacToePiece) eventRequestObject.getArg();
+				updateGameBoard(newPiece.getX(), newPiece.getY(), newPiece.getPiece()); }
+			case "win" -> {
+				Request eventRequestObject = (Request) evt.getNewValue();
+				Platform.runLater(() ->{
+					winLabelDisabled.setValue(false);
+					winLabel.setValue(eventRequestObject.getArg() + " Wins!");});
+				turnSwitcher.setValue(false);
+				returnToLobby(); }
+			case "draw" -> {
+				Platform.runLater(() -> {
+					winLabelDisabled.setValue(false);
+					winLabel.setValue(eventType);
+				});
+				turnSwitcher.setValue(false);
+				returnToLobby(); }
+			case "turnSwitch" -> turnSwitcher.setValue(!turnSwitcher.getValue());
+			case "messageAddedGameRoom" -> {
+				System.out.println("gameRoom detected incoming message");
+				Message message = (Message) evt.getNewValue();
+				String senderName = message.getName();
+				String txtMessage = message.getStringMessage();
+				Platform.runLater(() -> gameRoomChatMessages.add(senderName + ": " + txtMessage));
+			}
 		}
 	}
 

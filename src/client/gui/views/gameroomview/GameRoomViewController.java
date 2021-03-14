@@ -53,6 +53,7 @@ public class GameRoomViewController implements ViewController, PropertyChangeLis
 		}
 
 		gameInfo.textProperty().bind(gameRoomViewModel.winLabelProperty());
+		gameInfo.disableProperty().bind(gameRoomViewModel.winLabelDisabledProperty());
 
 		gameRoomViewModel.txtMessageProperty().bind(textToSendGameRoom.textProperty());
 

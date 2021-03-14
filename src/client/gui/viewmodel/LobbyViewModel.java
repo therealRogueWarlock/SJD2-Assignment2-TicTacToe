@@ -11,10 +11,12 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import transferobjects.Message;
+import transferobjects.Request;
 import util.LobbyModel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 	private ClientLobbyModel clientLobbyModel;
@@ -33,6 +35,7 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		clientLobbyModel.addListener("gameRoomAdd", this);
 		clientLobbyModel.addListener("gameRoomDel", this);
 		clientLobbyModel.addListener("messageAddedLobby", this);
+		clientLobbyModel.addListener("updateReply",this);
 
 		txtMessage = new SimpleStringProperty();
 
@@ -49,8 +52,12 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		clientLobbyModel.sendMessage(message);
 	}
 
-	public boolean join() {
+	public void update(){
+		clientLobbyModel.update();
+	}
 
+
+	public boolean join() {
 
 		try {
 			GameTableRow selectedItem = selectedGameRoom.getValue();
@@ -63,6 +70,26 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 		}
 		return false;
 	}
+
+	private void updateListViews(PropertyChangeEvent evt){
+		ArrayList<Message> lobbyChat = (ArrayList<Message>) ((Request) evt.getNewValue()).getArg();
+		ArrayList<GameData> allGameRoomGameData = (ArrayList<GameData>) ((Request) evt.getNewValue()).getArg2();
+		Platform.runLater(()-> {
+			lobbyChatMessages.clear();
+			for (Message message: lobbyChat) {
+				System.out.println(message);
+				lobbyChatMessages.add(message.toString());
+			}
+			observableGameRooms.clear();
+			for (GameData gameData:allGameRoomGameData){
+				observableGameRooms.add(new GameTableRow(gameData));
+			}
+		});
+
+
+
+	}
+
 
 	public ObservableList<GameTableRow> getObservableGameRooms() {
 		return observableGameRooms;
@@ -84,10 +111,11 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("Lobby view detect change");
 		switch (evt.getPropertyName()) {
-			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow((GameData) evt.getNewValue())));
+			case "gameRoomAdd" -> Platform.runLater(() -> observableGameRooms.add(new GameTableRow((GameData) ((Request) evt.getNewValue()).getArg())));
+
 			case "gameRoomDel" -> Platform.runLater(() -> {
 				System.out.println("LobbyViewModel, get delete room event");
-				observableGameRooms.removeIf(row -> row.getId() == (int) evt.getNewValue());
+				observableGameRooms.removeIf(row -> row.getId() == (int) ((Request)evt.getNewValue()).getArg());
 			});
 
 			case "messageAddedLobby" -> {
@@ -97,6 +125,7 @@ public class LobbyViewModel implements ViewModel, PropertyChangeListener {
 				String txtMessage = message.getStringMessage();
 				Platform.runLater(() -> lobbyChatMessages.add(senderName + ": " + txtMessage));
 			}
+			case "updateReply" -> updateListViews(evt);
 		}
 	}
 }

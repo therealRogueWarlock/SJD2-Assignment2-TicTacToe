@@ -1,6 +1,8 @@
 package server.networking;
 
+import server.model.gameroommodel.ServerGameRoomModel;
 import server.model.lobbymodel.ServerLobbyModel;
+import transferobjects.GameData;
 import transferobjects.Message;
 import transferobjects.Request;
 
@@ -48,6 +50,23 @@ public class SocketServer implements PropertyChangeListener {
 
 	public void createGameRoom(SocketServerHandler socketServerHandler, String playerName) {
 		serverLobbyModel.host(socketServerHandler, playerName);
+	}
+
+	public void getServerData(SocketServerHandler socketServerHandler){
+
+		ArrayList<Message> allLobbyMessages = serverLobbyModel.getAllMessages();
+		System.out.println(allLobbyMessages);
+		Request updateRequestReply = new Request("updateReply", allLobbyMessages);
+		ArrayList<GameData> allDameRoomData = serverLobbyModel.getAllGameRoomData();
+		updateRequestReply.setArg2(allDameRoomData);
+
+		try {
+			socketServerHandler.sendTransferObject(updateRequestReply);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
 	}
 
 	public void run() {
